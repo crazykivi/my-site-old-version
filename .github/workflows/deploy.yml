@@ -41,9 +41,15 @@ jobs:
         username: ${{ secrets.SERVER_USER }}  # Логин на сервере
         password: ${{ secrets.SERVER_PASSWORD }}  # Пароль на сервере
         script: |
-          echo "GitHub Actions is running"
           cd /home/ftpuser/site
           docker pull ${{ secrets.DOCKER_USERNAME }}/listprojects:latest  # Скачивает новый образ
-          docker stop my-site-container || true  # Останавливает старый контейнер (если он существует)
-          docker rm my-site-container || true  # Удаляет старый контейнер (если он существует)
-          docker run -d -p 80:80 --name my-site-container ${{ secrets.DOCKER_USERNAME }}/listprojects:latest  # Запускает новый контейнер
+          
+          # Останавливаем и удаляем старый контейнер, если он существует
+          docker stop my-site-container || true
+          docker rm my-site-container || true
+          
+          # Проверим конфигурацию Nginx и поправим, если нужно
+          docker run --rm ${{ secrets.DOCKER_USERNAME }}/listprojects:latest bash -c "cat /etc/nginx/nginx.conf | grep -q 'server {' || echo 'server { listen 80; server_name localhost; location / { root /usr/share/nginx/html; index index.html; } }' > /etc/nginx/nginx.conf"
+          
+          # Запускаем новый контейнер с исправленной конфигурацией
+          docker run -d -p 80:80 --name my-site-container ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
