@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя страница</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="css/styles.css"> -->
+</head>
+
+<body>
+    <header class="bg-dark text-white py-3">
+        <div class="container d-flex justify-content-between">
+            <h1 class="h4">Моя страница</h1>
+            <nav>
+                <a href="#projects" class="text-white text-decoration-none mx-2">Проекты</a>
+                <a href="#about" class="text-white text-decoration-none mx-2">О себе</a>
+                <a href="#links" class="text-white text-decoration-none mx-2">Ссылки</a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="projects" class="py-5">
+        <div class="container">
+            <h2 class="mb-4">Проекты</h2>
+            <div class="row g-4">
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card">
+                        <!-- <img src="img/img.png" class="card-img-top" alt="Название проекта"> -->
+                        <div class="card-body">
+                            <h5 class="card-title">Название проекта</h5>
+                            <p class="text-muted">О проекте (краткое описание)</p>
+                            <p><strong>Стек технологий:</strong> HTML, CSS, JS</p>
+                            <a href="#" class="btn btn-primary btn-sm">Перейти к проекту</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="mb-4">О себе</h2>
+            <p>Здесь будет информация обо мне.</p>
+        </div>
+    </section>
+
+    <section id="links" class="py-5">
+        <div class="container">
+            <h2 class="mb-4">Ссылки</h2>
+            <ul class="list-unstyled">
+                <li><a href="#" class="text-decoration-none">Ссылка 1</a></li>
+                <li><a href="#" class="text-decoration-none">Ссылка 2</a></li>
+                <li><a href="#" class="text-decoration-none">Ссылка 3</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
