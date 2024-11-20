@@ -49,7 +49,7 @@ jobs:
           docker rm my-site-container || true
           
           # Проверим конфигурацию Nginx и поправим, если нужно
-          docker run --rm ${{ secrets.DOCKER_USERNAME }}/listprojects:latest bash -c "cat /etc/nginx/nginx.conf | grep -q 'server {' || echo 'server { listen 80; server_name localhost; location / { root /usr/share/nginx/html; index index.html; } }' > /etc/nginx/nginx.conf"
+          docker run --rm ${{ secrets.DOCKER_USERNAME }}/listprojects:latest sh -c "cat /etc/nginx/nginx.conf | grep -q 'server {' || echo 'server { listen 80; server_name localhost; location / { root /usr/share/nginx/html; index index.html; } }' > /etc/nginx/nginx.conf"
           
           # Запускаем новый контейнер с исправленной конфигурацией
           docker run -d -p 80:80 --name my-site-container ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
