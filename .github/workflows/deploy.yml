@@ -23,40 +23,37 @@ jobs:
     - name: Log in to DockerHub
       uses: docker/login-action@v2
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}  # Логин для DockerHub
-        password: ${{ secrets.DOCKER_PASSWORD }}  # Пароль или токен для DockerHub
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Tag Docker image
       run: |
-        docker tag listprojects ${{ secrets.DOCKER_USERNAME }}/listprojects:latest  # Тегируем образ для DockerHub
+        docker tag listprojects ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
 
     - name: Push Docker image to DockerHub
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/listprojects:latest  # Пушим на DockerHub
+        docker push ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
 
     - name: SSH to server and update Docker container
-      uses: appleboy/ssh-action@v0.1.6  # Попробуйте последнюю версию
+      uses: appleboy/ssh-action@v0.1.6
       with:
-        host: ${{ secrets.SERVER_IP }}  # IP сервера
-        username: ${{ secrets.SERVER_USER }}  # Логин на сервере
-        password: ${{ secrets.SERVER_PASSWORD }}  # Пароль на сервере
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        password: ${{ secrets.SERVER_PASSWORD }}
         script: |
           cd /home/ftpuser/site
-          docker pull ${{ secrets.DOCKER_USERNAME }}/listprojects:latest  # Скачивает новый образ
           
-          # Останавливаем и удаляем старый контейнер, если он существует
+          docker pull ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
+          
           docker stop my-site-container || true
           docker rm my-site-container || true
           
-          # Проверим конфигурацию Nginx и поправим, если нужно
           docker run --rm \
             -v /etc/nginx:/etc/nginx \
-            ***/listprojects:latest sh -c "
+            ${{ secrets.DOCKER_USERNAME }}/listprojects:latest sh -c "
               if [ ! -f /etc/nginx/nginx.conf ]; then
                 echo 'http { server { listen 80; server_name localhost; location / { root /usr/share/nginx/html; index index.html; } } }' > /etc/nginx/nginx.conf;
               fi
               nginx -s reload"
-
-
-          # Запускаем новый контейнер с исправленной конфигурацией
+          
           docker run -d -p 80:80 --name my-site-container ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
