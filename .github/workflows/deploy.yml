@@ -50,7 +50,7 @@ jobs:
           docker rm my-site-container || true
 
           docker run -d -p 80:80 --name my-site-container \
-            -v /etc/nginx/nginx.conf:/etc/nginx/nginx.conf \
+            -v /home/sshuser/sitegit/nginx.conf:/etc/nginx/nginx.conf \
             -v /home/sshuser/sitegit:/usr/share/nginx/html \
             ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
 
