@@ -8,6 +8,11 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="css/styles.css"> -->
+    <style>
+        #about img {
+            width: 250px;
+        }
+    </style>
 </head>
 
 <body>
@@ -17,6 +22,7 @@
             <nav>
                 <a href="#projects" class="text-white text-decoration-none mx-2">Проекты</a>
                 <a href="#about" class="text-white text-decoration-none mx-2">О себе</a>
+                <a href="#aboutSite" class="text-white text-decoration-none mx-2">О сайте</a>
                 <a href="#links" class="text-white text-decoration-none mx-2">Ссылки</a>
             </nav>
         </div>
@@ -29,12 +35,273 @@
 
                 <div class="col-md-6 col-lg-4">
                     <div class="card">
-                        <!-- <img src="img/img.png" class="card-img-top" alt="Название проекта"> -->
+                        <a href="http://31.128.36.243/upload/test_build/">
+                            <img src="img/catalog-hozkom.png" class="card-img-top" alt="Каталог Хозкома">
+                        </a>
                         <div class="card-body">
-                            <h5 class="card-title">Название проекта</h5>
-                            <p class="text-muted">О проекте (краткое описание)</p>
-                            <p><strong>Стек технологий:</strong> HTML, CSS, JS</p>
-                            <a href="#" class="btn btn-primary btn-sm">Перейти к проекту</a>
+                            <h5 class="card-title">Каталог для Хозкома</h5>
+
+                            <p><strong>Стек технологий:</strong>
+                                <br>Фронтенд: JavaScript, JQuery, AJAX.
+                                <br>Бекенд: Node.js, PHP, MySQL, Apache2.
+                            </p>
+
+                            <a href="http://31.128.36.243/upload/test_build/" class="btn btn-primary btn-sm">Перейти к
+                                проекту</a>
+
+                            <button class="btn btn-link" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#aboutProject1" aria-expanded="false" aria-controls="aboutProject"
+                                id="toggleButton">
+                                Подробнее о проекте
+                            </button>
+
+                            <div class="collapse" id="aboutProject1">
+                                <p><br>Сайт ПКФ "ХозКомплект" был
+                                    разработан с целью создания удобного интернет-ресурса для оптовых клиентов.
+                                    Платформа позволяет пользователям легко выбирать товары из широкого каталога и
+                                    оформлять заказы с помощью сервиса Yandex SMTP, который используется для обработки
+                                    заявок.</p>
+                                В будущем система будет интегрирована напрямую с базой данных MySQL, что обеспечит
+                                прямое взаимодействие с 1С для автоматизации процессов.
+                                <p>
+                                    <u>Обратите внимание, что сайт пока не имеет привязанного домена, и SSL-сертификаты
+                                        не установлены!</u>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card">
+                        <a href="http://31.128.36.243/tsd/">
+                            <img src="img/emulator-tsd.png" class="card-img-top" alt="Каталог Хозкома">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">Эмулятор ТСД для Хозкома (только для мобильных)</h5>
+
+                            <p><strong>Стек технологий:</strong>
+                                <br>Фронтенд: JavaScript, JQuery, AJAX.
+                                <br>Бекенд: Node.js, PHP, MySQL, Apache2.
+                            </p>
+
+                            <a href="http://31.128.36.243/tsd/" class="btn btn-primary btn-sm">Перейти к
+                                проекту</a>
+
+                            <button class="btn btn-link" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#aboutProject2" aria-expanded="false" aria-controls="aboutProject"
+                                id="toggleButton">
+                                Подробнее о проекте
+                            </button>
+
+                            <div class="collapse" id="aboutProject2">
+                                <p><br>
+                                    В рамках этого проекта был внедрён
+                                    эмулятор ТСД, который имитирует работу терминала для ввода товаров.
+                                    Система позволяет покупателям сканировать вводить коды и количества товара,
+                                    автоматически сохраняя их заказ. Эмулятор ТСД позволяет ускорить
+                                    процесс обработки заказов и минимизировать ошибки, обеспечивая при этом точность
+                                    учета товаров.
+                                </p>
+                                <p>Сайт адаптирован для правшей/левшей.
+                                    Также сайт интегрирован с системой 1С через API на Node.js, что позволяет
+                                    синхронизировать данные о заявках в реальном времени. API
+                                    обрабатывает запросы между веб-платформой и базой данных 1С, обеспечивая
+                                    автоматическое обновление информации о заказах клиентов.
+                                </p>
+                                <p>
+                                    <u>Обратите внимание, что сайт пока не имеет привязанного домена, и SSL-сертификаты
+                                        не установлены!</u>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card">
+                        <a href="http://193.3.23.245/">
+                            <img src="img/my-site.png" class="card-img-top" alt="Каталог Хозкома">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">Мой личный сайт</h5>
+
+                            <p><strong>Стек технологий:</strong>
+                                <br>Фронтенд: JavaScript, Bootstrap.
+                                <br>Бекенд: Nginx, Docker (для развертывания).
+                            </p>
+
+                            <a href="http://193.3.23.245/" class="btn btn-primary btn-sm">Перейти к
+                                проекту</a>
+
+                            <button class="btn btn-link" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#aboutProject3" aria-expanded="false" aria-controls="aboutProject"
+                                id="toggleButton">
+                                Подробнее о проекте
+                            </button>
+
+                            <div class="collapse" id="aboutProject3">
+                                <p><br>Это мой личный сайт, на котором я планирую размещать информацию о своих проектах.
+                                    На данный момент сайт не использует базы данных, так как для его работы в этом нет
+                                    необходимости.
+                                </p>
+                                <p> Сайт развернут в контейнере Docker с использованием веб-сервера Nginx. Все изменения
+                                    в проекте осуществляются через систему контроля версий GitHub. Внесенные изменения
+                                    автоматически загружаются в <a
+                                        href="https://github.com/crazykivi/my-site">репозиторий
+                                        на GitHub</a>.
+                                <p> Для автоматизации процесса развертывания используется GitHub Actions. Это позволяет
+                                    контейнеру с новым кодом автоматически разворачиваться на сервере каждый раз при
+                                    обновлении репозитория. Таким образом, любые изменения, отправленные в репозиторий
+                                    на GitHub, автоматически обновляют сайт без необходимости вручную развертывать
+                                    изменения.
+                                </p>
+                                <p> Контейнер получает настройки Nginx с виртуальной машины, однако в дальнейшем
+                                    планируется оптимизация этого процесса.
+                                </p>
+                                <p>
+                                    <u>Обратите внимание, что сайт пока не имеет привязанного домена, и SSL-сертификаты
+                                        не установлены!</u>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card">
+                        <a href="https://github.com/crazykivi/site-dance">
+                            <img src="img/site-dance.png" class="card-img-top" alt="Каталог Хозкома">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">Сайт на заказ для школы танцев (дипломная работа)</h5>
+
+                            <p><strong>Стек технологий:</strong>
+                                <br>Фронтенд: JavaScript, JQuery, AJAX.
+                                <br>Бекенд: PHP, Apache, MySQL.
+                            </p>
+
+                            <a href="https://github.com/crazykivi/site-dance" class="btn btn-primary btn-sm">Перейти к
+                                проекту</a>
+
+                            <button class="btn btn-link" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#aboutProject4" aria-expanded="false" aria-controls="aboutProject"
+                                id="toggleButton">
+                                Подробнее о проекте
+                            </button>
+
+                            <div class="collapse" id="aboutProject4">
+                                <p><br>Этот проект был выполнен в рамках дипломной работы и представляет собой сайт для
+                                    школы танцев, с целью
+                                    создания онлайн-платформы для взаимодействия с клиентами и управления расписанием
+                                    занятий.
+                                    Сайт включает в себя функциональность для:
+                                <ul>
+                                    <li>Просмотра расписания и выбора подходящих занятий по танцам;</li>
+                                    <li>Онлайн-записи на занятия;</li>
+                                    <li>Административной панели для управления расписанием;</li>
+                                </ul>
+                                </p>
+                                <p> Используемый стек технологий обеспечил быструю загрузку страниц, интерактивность
+                                    интерфейса и надежную работу
+                                    с данными в реальном времени через AJAX и динамическое обновление страниц без
+                                    перезагрузки. Бекенд на PHP
+                                    и MySQL обеспечил стабильную работу системы и возможность хранения информации о
+                                    пользователях и занятиях.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card">
+                        <a href="https://github.com/crazykivi/supsurf">
+                            <img src="img/supsurf.png" class="card-img-top" alt="Каталог Хозкома">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">Сайт для аренды и проката SupSurf (дипломная работа)</h5>
+
+                            <p><strong>Стек технологий:</strong>
+                                <br>Фронтенд: JavaScript, JQuery, AJAX.
+                                <br>Бекенд: PHP, Apache, MySQL.
+                            </p>
+
+                            <a href="https://github.com/crazykivi/supsurf" class="btn btn-primary btn-sm">Перейти к
+                                проекту</a>
+
+                            <button class="btn btn-link" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#aboutProject6" aria-expanded="false" aria-controls="aboutProject"
+                                id="toggleButton">
+                                Подробнее о проекте
+                            </button>
+
+                            <div class="collapse" id="aboutProject6">
+                                <p><br>Этот проект был выполнен в рамках дипломной работы и представляет собой сайт для
+                                    аренды и проката
+                                    SupSurf-оборудования. Цель проекта — создание платформы для удобного бронирования и
+                                    аренды оборудования
+                                    для активного отдыха на воде.</p>
+                                <p>Сайт включает в себя следующие ключевые функции:
+                                <ul>
+                                    <li>Онлайн-бронирование и аренда с выбором времени и даты;</li>
+                                    <li>Административная панель для управления оборудованием, бронированиями и
+                                        клиентами;</li>
+                                    <li>Интерактивное расписание с возможностью просмотра дней и времени записи.</li>
+                                </ul>
+                                </p>
+                                <p>В рамках проекта использовались современные технологии, такие как AJAX для
+                                    динамической загрузки данных, а также
+                                    PHP и MySQL для обеспечения функциональности бекенда. Система предоставляет
+                                    пользователям удобный интерфейс
+                                    для работы с оборудованием и его бронированием, а владельцам бизнеса — инструменты
+                                    для управления процессами
+                                    аренды.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card">
+                        <a href="https://github.com/crazykivi/restoran">
+                            <img src="img/restoran.png" class="card-img-top" alt="Каталог Хозкома">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">Сайт для ресторана "Симфония вкусов" (дипломная работа)</h5>
+
+                            <p><strong>Стек технологий:</strong>
+                                <br>Фронтенд: JavaScript, JQuery, AJAX.
+                                <br>Бекенд: PHP, Apache, MySQL.
+                            </p>
+
+                            <a href="https://github.com/crazykivi/restoran" class="btn btn-primary btn-sm">Перейти к
+                                проекту</a>
+
+                            <button class="btn btn-link" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#aboutProject5" aria-expanded="false" aria-controls="aboutProject"
+                                id="toggleButton">
+                                Подробнее о проекте
+                            </button>
+
+                            <div class="collapse" id="aboutProject5">
+                                <p>Этот проект был выполнен в рамках дипломной работы и представляет собой сайт для
+                                    ресторана "Симфония вкусов",
+                                    который включает в себя функциональность для онлайн-заказов с доставкой. Главная
+                                    цель — создать
+                                    удобную платформу для просмотра меню, оформления заказов и их отслеживания.</p>
+
+                                <p>Ключевые особенности проекта:
+                                <ul>
+                                    <li>Просмотр меню с возможностью выбора блюд для заказа;</li>
+                                    <li>Функция добавления товаров в корзину и оформления заказа без оплаты;</li>
+                                    <li>Личный кабинет пользователя для управления заказами и просмотра истории заказов;
+                                    </li>
+                                    <li>Поддержка функции доставки с выбором времени доставки;</li>
+                                    <li>Административная панель для управления меню, заказами и клиентами.</li>
+                                </ul>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -46,22 +313,78 @@
     <section id="about" class="py-5 bg-light">
         <div class="container">
             <h2 class="mb-4">О себе</h2>
-            <p>Здесь будет не много информация обо мне.</p>
+            <img src="img/my.png">
+            <p><strong>Редько Никита Сергеевич</strong>, 25 лет <strong>(29.01.1999)</strong>.</p>
+            <p>Проживаю в <strong>г. Красноярск</strong>.</p>
+
+            <p>Образование:</p>
+            <ul>
+                <li>Сибирский государственный университет науки и технологий им. М.Ф. Решетнева, специальность
+                    <strong>Информационные системы и технологии в управлении</strong>, 4 года (бакалавриат). Дата
+                    окончания обучения: <strong>2024</strong> год.
+                </li>
+                <li>Аэрокосмический колледж СибГУ им. академика М.Ф. Решетнева, специальность <strong>Техник по защите
+                        информации</strong>, 3 года (среднее профессиональное образование). Дата окончания обучения:
+                    <strong>2020</strong> год.
+                </li>
+            </ul>
+
+            <p>На данный момент работаю в <strong>КГБУ «ЦРМПиООС»</strong> (Министерство Красноярского края) на
+                должности <strong>программист 1 категории</strong>, где занимаюсь развитием и поддержкой
+                backend-сервисов, проектированием API, а также работой с базами данных и фронтендом.</p>
+
+            <p>До этого работал в <strong>ПКФ «ХозКомплект»</strong> (2024 год), где вначале занимал должность
+                системного
+                администратора, а позже участвовал в разработке сайта-каталога для онлайн-заказов и эмулятора ТСД. После
+                увольнения продолжил работу над сайтом и начал развивать эмулятор ТСД.</p>
+
+            <p>Моё первое официальное место работы — <strong>ООО «Сервис-ТК»</strong> (2018 год), где я занимался
+                разработкой и поддержкой сайта компании, а также обеспечивал его бесперебойную работу и доступность. В
+                мои обязанности входила настройка серверной части, работа с клиентской логикой и решение технических
+                проблем для поддержания стабильности сайта.</p>
+
+            <p>Стремлюсь к постоянному саморазвитию и изучению новых технологий, всегда готов к новым вызовам и
+                интересным проектам.</p>
         </div>
     </section>
 
-    <section id="links" class="py-5">
+    <section id="aboutSite" class="py-5">
         <div class="container">
-            <h2 class="mb-4">Ссылки</h2>
+            <h2 class="mb-4">О сайте</h2>
+            <p>Сайт развернут в контейнере Docker с использованием веб-сервера Nginx. Все изменения на сайте выполняются
+                через GitHub. Все изменения пушатся в <a href="https://github.com/crazykivi/my-site">этот
+                    репозиторий</a>.
+                <br><br>
+                Для автоматизации развертывания используется GitHub Actions, что позволяет автоматически разворачивать
+                контейнер с новым кодом на сервере при каждом изменении в репозитории. Таким образом, при каждом пуше на
+                GitHub, соответствующие изменения автоматически внедряются в систему и обновляют сайт без необходимости
+                ручного развертывания.
+                <br>
+                Контейнер берет настройки Nginx с виртуальной машины (в дальнейшем планируется изменить данный процесс).
+                <br><br>
+                Все исходные коды лежат на <a href="https://github.com/crazykivi/my-site">данном репозитории</a>,
+                инструкция по развертыванию будет написана позже.
+            </p>
+        </div>
+    </section>
+
+    <section id="links" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="mb-4">Полезные ссылки</h2>
             <ul class="list-unstyled">
-                <li><a href="#" class="text-decoration-none">Первая</a></li>
-                <li><a href="#" class="text-decoration-none">Вторая</a></li>
-                <li><a href="#" class="text-decoration-none">3</a></li>
+                <li><a href="https://github.com/crazykivi" class="text-decoration-none">GitHub</a></li>
+                <li><a href="files/resume.pdf" class="text-decoration-none"
+                        download="Resume_Nikita_Redko_21_11_2024">Моё резюме (актуально на 21.11.2024)</a></li>
+                <li><a href="mailto:nik.ita-redko@yandex.ru" class="text-decoration-none">Почта для связи:
+                        nik.ita-redko@yandex.ru</a></li>
+                <li><a href="https://web.telegram.org/a/#801767645" class="text-decoration-none">Телеграмм для связи:
+                        crazykivi</a></li>
             </ul>
         </div>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
