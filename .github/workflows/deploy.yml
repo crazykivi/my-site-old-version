@@ -52,7 +52,17 @@ jobs:
             -v /etc/nginx:/etc/nginx \
             ${{ secrets.DOCKER_USERNAME }}/listprojects:latest sh -c "
               if [ ! -f /etc/nginx/nginx.conf ]; then
-                echo 'http { server { listen 80; server_name localhost; location / { root /usr/share/nginx/html; index index.html; } } }' > /etc/nginx/nginx.conf;
+                echo 'events { worker_connections 1024; }
+                http {
+                  server {
+                    listen 80;
+                    server_name localhost;
+                    location / {
+                      root /usr/share/nginx/html;
+                      index index.html;
+                    }
+                  }
+                }' > /etc/nginx/nginx.conf;
               fi
               nginx -s reload"
           
