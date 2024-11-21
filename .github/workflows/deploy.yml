@@ -11,7 +11,10 @@ jobs:
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3  # Используйте актуальную версию
+      uses: actions/checkout@v3 
+
+    - name: Print environment variables for debugging
+      run: echo "Image: ${{ secrets.IMAGE_NAME }}"
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -49,13 +52,14 @@ jobs:
           docker rm my-site-container || true
           
           # Проверим конфигурацию Nginx и поправим, если нужно
-          docker run --rm ***/listprojects:latest sh -c "
-            if ! grep -q 'http {' /etc/nginx/nginx.conf; then
-              echo 'http { server { listen 80; server_name localhost; location / { root /usr/share/nginx/html; index index.html; } } }' > /etc/nginx/nginx.conf;
-            elif ! grep -q 'server {' /etc/nginx/nginx.conf; then
-              sed -i '/http {/a \\    server { listen 80; server_name localhost; location / { root /usr/share/nginx/html; index index.html; } }' /etc/nginx/nginx.conf;
-            fi
-            nginx -s reload"
+          docker run --rm \
+            -v /etc/nginx:/etc/nginx \
+            ***/listprojects:latest sh -c "
+              if [ ! -f /etc/nginx/nginx.conf ]; then
+                echo 'http { server { listen 80; server_name localhost; location / { root /usr/share/nginx/html; index index.html; } } }' > /etc/nginx/nginx.conf;
+              fi
+              nginx -s reload"
+
 
           # Запускаем новый контейнер с исправленной конфигурацией
           docker run -d -p 80:80 --name my-site-container ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
