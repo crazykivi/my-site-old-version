@@ -48,22 +48,20 @@ jobs:
           docker stop my-site-container || true
           docker rm my-site-container || true
           
-          docker run --rm \
+          if [ ! -f /etc/nginx/nginx.conf ]; then
+            echo 'events { worker_connections 1024; }
+            http {
+              server {
+                listen 80;
+                server_name localhost;
+                location / {
+                  root /usr/share/nginx/html;
+                  index index.html;
+                }
+              }
+            }' > /etc/nginx/nginx.conf
+          fi
+
+          docker run -d -p 80:80 --name my-site-container \
             -v /etc/nginx:/etc/nginx \
-            ${{ secrets.DOCKER_USERNAME }}/listprojects:latest sh -c "
-              if [ ! -f /etc/nginx/nginx.conf ]; then
-                echo 'events { worker_connections 1024; }
-                http {
-                  server {
-                    listen 80;
-                    server_name localhost;
-                    location / {
-                      root /usr/share/nginx/html;
-                      index index.html;
-                    }
-                  }
-                }' > /etc/nginx/nginx.conf;
-              fi
-              nginx -s reload"
-          
-          docker run -d -p 80:80 --name my-site-container ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
+            ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
