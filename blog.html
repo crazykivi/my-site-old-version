@@ -4,43 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Управление записями</title>
+    <title>Личный блог</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Quill.js CSS -->
     <link href="https://cdn.jsdelivr.net/npm/quill/dist/quill.snow.css" rel="stylesheet">
-    <style>
-        .ql-editor {
-            min-height: 200px;
-        }
-
-        .page-button {
-            cursor: pointer;
-        }
-
-        .ql-editor img {
-            max-width: 100%;
-            resize: both;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .ql-align-left {
-            float: left;
-            margin-right: 10px;
-        }
-
-        .ql-align-center {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .ql-align-right {
-            float: right;
-            margin-left: 10px;
-        }
-    </style>
+    <link src="css/main.css" rel="stylesheet">
 </head>
 
 <body>
@@ -156,11 +125,9 @@
                 const recordElement = document.createElement('div');
                 recordElement.className = 'card mb-3';
 
-                recordElement.innerHTML = `
-      <div class="card-body">
-        <div class="ql-editor">${record.content}</div>
-      </div>
-    `;
+                recordElement.innerHTML = `<div class="card-body">
+                    <div class="ql-editor">${record.content}</div>
+                    </div>`;
 
                 const imgTags = recordElement.querySelectorAll('img');
                 imgTags.forEach(img => {
@@ -197,12 +164,11 @@
             fetch(`http://193.3.23.245:3000/get-records?page=${page}`)
                 .then(response => response.json())
                 .then(data => {
-                    renderRecords(data.records); // Используем data.records для отображения записей
-                    renderPagination(data.totalRecords, page); // Используем data.totalRecords для пагинации
+                    renderRecords(data.records);
+                    renderPagination(data.totalRecords, page);
                 })
                 .catch(error => console.error('Ошибка загрузки данных:', error));
         }
-
 
         loadRecords();
     </script>

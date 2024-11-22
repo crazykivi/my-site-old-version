@@ -1,0 +1,34 @@
+.ql-editor {
+  min-height: 200px;
+}
+
+.page-button {
+  cursor: pointer;
+}
+
+.ql-editor img {
+  max-width: 100%;
+  resize: both;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.ql-align-left {
+  float: left;
+  margin-right: 10px;
+}
+
+.ql-align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ql-align-right {
+  float: right;
+  margin-left: 10px;
+}
+
+#about img {
+  width: 400px;
+}
