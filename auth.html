@@ -54,7 +54,7 @@
 
         let correctPassword = '';
 
-        fetch('http://193.3.23.245:3000/get-password')
+        fetch('http://193.3.23.245:3001/get-password')
             .then(response => response.json())
             .then(data => {
                 correctPassword = data.password;
@@ -66,7 +66,7 @@
 
             if (enteredPassword === correctPassword) {
 
-                fetch('http://193.3.23.245:3000/set-cookie')
+                fetch('http://193.3.23.245:3001/set-cookie')
                     .then(response => response.json())
                     .then(data => {
                         alert(data.message);
