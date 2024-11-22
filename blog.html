@@ -63,9 +63,9 @@
             }
         });
 
-        fetch('http://193.3.23.245:3001/check-session', {
+        fetch('http://193.3.23.245:3001/check-token', {
             method: 'POST',
-            credentials: 'include'
+            credentials: 'include',
         })
             .then(response => response.json())
             .then(data => {
@@ -74,11 +74,11 @@
                     console.debug("Авторизирован");
                 } else {
                     document.getElementById('add-record-panel').style.display = 'none';
-                    console.debug("Не авторизированны");
+                    console.debug("Не авторизирован");
                 }
             })
             .catch(error => {
-                console.error('Ошибка проверки сессии:', error);
+                console.error('Ошибка при проверке токена:', error);
                 document.getElementById('add-record-panel').style.display = 'none';
             });
 
