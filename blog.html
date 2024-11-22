@@ -148,16 +148,6 @@
                 .catch(error => console.error('Ошибка при сохранении записи:', error));
         });
 
-        function loadRecords(page = 1) {
-            fetch(`http://193.3.23.245:3000/get-records?page=${page}`)
-                .then(response => response.json())
-                .then(data => {
-                    renderRecords(data);
-                    renderPagination(data.length, page);
-                })
-                .catch(error => console.error('Ошибка загрузки данных:', error));
-        }
-
         function renderRecords(records) {
             const recordsList = document.getElementById('records-list');
             recordsList.innerHTML = '';
@@ -202,6 +192,17 @@
                 });
             });
         }
+
+        function loadRecords(page = 1) {
+            fetch(`http://193.3.23.245:3000/get-records?page=${page}`)
+                .then(response => response.json())
+                .then(data => {
+                    renderRecords(data.records); // Используем data.records для отображения записей
+                    renderPagination(data.totalRecords, page); // Используем data.totalRecords для пагинации
+                })
+                .catch(error => console.error('Ошибка загрузки данных:', error));
+        }
+
 
         loadRecords();
     </script>
