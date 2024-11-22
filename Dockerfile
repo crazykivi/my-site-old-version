@@ -1,11 +1,18 @@
-# Официальный Nginx образ
 FROM nginx:alpine
+
+RUN apk update && apk add --no-cache \
+    nodejs \
+    npm \
+    bash \
+    sqlite
 
 COPY ./ /usr/share/nginx/html
 
-EXPOSE 80
+WORKDIR /usr/share/nginx/html
+RUN npm install express sqlite3
+
+EXPOSE 80 3000
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
-# Запуск Nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["sh", "-c", "node /usr/share/nginx/html/server.js & nginx -g 'daemon off;'"]

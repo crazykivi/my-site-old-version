@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление записями</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Quill.js CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/quill/dist/quill.snow.css" rel="stylesheet">
+    <style>
+        .ql-editor {
+            min-height: 200px;
+        }
+
+        .page-button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="bg-dark text-white py-3">
+        <div class="container d-flex justify-content-between">
+            <h1 class="h4">Управление записями</h1>
+            <nav>
+                <a href="index.html" class="text-white text-decoration-none mx-2">Главная</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container my-5">
+        <div id="records-container">
+            <h2>Записи</h2>
+            <div id="records-list" class="mb-3">
+            </div>
+            <nav aria-label="Pagination">
+                <ul id="pagination" class="pagination">
+                </ul>
+            </nav>
+        </div>
+
+        <div id="add-record-panel" class="d-none mt-5">
+            <h2>Добавить новую запись</h2>
+            <div id="editor" class="mb-3"></div>
+            <button id="save-button" class="btn btn-success">Сохранить запись</button>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Quill.js -->
+    <script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
+    <script>
+        const editor = new Quill('#editor', {
+            theme: 'snow'
+        });
+
+        const recordsPerPage = 5; 
+        let records = []; 
+        let currentPage = 1; 
+
+        const hasAccess = document.cookie.includes('auth_token=');
+        if (hasAccess) {
+            document.getElementById('add-record-panel').classList.remove('d-none');
+        }
+
+        function loadRecords() {
+            fetch('http://193.3.23.245:3000/api/records')
+                .then(response => response.json())
+                .then(data => {
+                    records = data.records;
+                    renderRecords();
+                    renderPagination();
+                })
+                .catch(error => console.error('Ошибка загрузки данных:', error));
+        }
+
+        function renderRecords() {
+            const start = (currentPage - 1) * recordsPerPage;
+            const end = start + recordsPerPage;
+            const recordsToShow = records.slice(start, end);
+
+            const container = document.getElementById('records-list');
+            container.innerHTML = '';
+
+            recordsToShow.forEach(record => {
+                const recordElement = document.createElement('div');
+                recordElement.className = 'card mb-3';
+                recordElement.innerHTML = `
+                    <div class="card-body">
+                        <div class="ql-editor">${record.content}</div>
+                    </div>
+                `;
+                container.appendChild(recordElement);
+            });
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(records.length / recordsPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const li = document.createElement('li');
+                li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                li.innerHTML = `<a class="page-link page-button" data-page="${i}">${i}</a>`;
+                pagination.appendChild(li);
+            }
+
+            document.querySelectorAll('.page-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    currentPage = parseInt(e.target.dataset.page);
+                    renderRecords();
+                    renderPagination();
+                });
+            });
+        }
+
+        document.getElementById('save-button').addEventListener('click', () => {
+            const newRecord = { content: editor.root.innerHTML };
+            
+            fetch('http://193.3.23.245:3000/api/records', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newRecord)
+            })
+                .then(response => response.json())
+                .then(() => {
+                    editor.root.innerHTML = '';
+                    loadRecords();
+                })
+                .catch(error => console.error('Ошибка сохранения записи:', error));
+        });
+
+        loadRecords();
+    </script>
+</body>
+
+</html>
