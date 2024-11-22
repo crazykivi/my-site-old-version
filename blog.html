@@ -64,7 +64,8 @@
         });
 
         fetch('http://193.3.23.245:3001/check-session', {
-            method: 'POST'
+            method: 'POST',
+            credentials: 'include'
         })
             .then(response => response.json())
             .then(data => {
@@ -77,7 +78,6 @@
             .catch(error => {
                 console.error('Ошибка проверки сессии:', error);
                 document.getElementById('add-record-panel').style.display = 'none';
-                alert("Произошла ошибка при проверке сессии.");
             });
 
         editor.getModule('toolbar').addHandler('image', function () {
