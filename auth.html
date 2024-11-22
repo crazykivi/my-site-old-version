@@ -65,7 +65,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert(data.message);
+                        //alert(data.message);
                         var passwordModal = bootstrap.Modal.getInstance(document.getElementById('passwordModal'));
                         passwordModal.hide();
                     } else {
