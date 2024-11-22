@@ -53,33 +53,95 @@
     <!-- Quill.js -->
     <script src="https://cdn.jsdelivr.net/npm/quill/dist/quill.min.js"></script>
     <script>
-        const { ClickHouse } = require('@clickhouse/client');
-
-        const clickhouse = new ClickHouse({
-            url: 'http://193.3.23.245:8123',
-            debug: false,
-            basicAuth: { username: 'default', password: '' },
-            format: 'json',
+        // Инициализация Quill.js
+        const editor = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['link', 'image'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'align': [] }],
+                    ['blockquote', 'code-block'],
+                    [{ 'header': '1' }, { 'header': '2' }],
+                    [{ 'font': [] }],
+                    [{ 'size': ['small', 'medium', 'large'] }],
+                    [{ 'color': [] }, { 'background': [] }],
+                ]
+            }
         });
 
-        clickhouse.query('SELECT * FROM records').toPromise()
-            .then(rows => {
-                console.log(rows);
-            })
-            .catch(err => {
-                console.error('Ошибка:', err);
-            });
-
-        async function insertRecord(content) {
-            try {
-                await clickhouse.insert('INSERT INTO records (content) VALUES')
-                    .values([[content]])
-                    .toPromise();
-                console.log('Запись успешно добавлена');
-            } catch (err) {
-                console.error('Ошибка при добавлении записи:', err);
-            }
+        /*
+        const hasAccess = document.cookie.includes('auth_token=');
+        if (hasAccess) {
+            document.getElementById('add-record-panel').style.display = 'block';
         }
+            */
+
+        document.getElementById('save-button').addEventListener('click', () => {
+            const newRecord = { content: editor.root.innerHTML };
+
+            fetch('/save-record', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newRecord)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Запись сохранена:', data);
+                    editor.root.innerHTML = '';
+                })
+                .catch(error => console.error('Ошибка при сохранении записи:', error));
+        });
+
+        function loadRecords() {
+            fetch('/get-records')
+                .then(response => response.json())
+                .then(data => {
+                    renderRecords(data);
+                    renderPagination(data.length);
+                })
+                .catch(error => console.error('Ошибка загрузки данных:', error));
+        }
+
+        function renderRecords(records) {
+            const recordsList = document.getElementById('records-list');
+            recordsList.innerHTML = '';
+            records.forEach(record => {
+                const recordElement = document.createElement('div');
+                recordElement.className = 'card mb-3';
+                recordElement.innerHTML = `
+                    <div class="card-body">
+                        <div class="ql-editor">${record.content}</div>
+                    </div>
+                `;
+                recordsList.appendChild(recordElement);
+            });
+        }
+
+        function renderPagination(totalRecords) {
+            const recordsPerPage = 5;
+            const totalPages = Math.ceil(totalRecords / recordsPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageItem = document.createElement('li');
+                pageItem.className = `page-item`;
+                pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+                pagination.appendChild(pageItem);
+            }
+
+            document.querySelectorAll('.page-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = parseInt(e.target.dataset.page);
+                    console.log(`Переключаем на страницу ${page}`);
+                });
+            });
+        }
+
+        loadRecords();
     </script>
 </body>
 
