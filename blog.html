@@ -81,7 +81,7 @@
         document.getElementById('save-button').addEventListener('click', () => {
             const newRecord = { content: editor.root.innerHTML };
 
-            fetch('/save-record', {
+            fetch('http://193.3.23.245:3000//save-record', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newRecord)
@@ -95,7 +95,7 @@
         });
 
         function loadRecords() {
-            fetch('/get-records')
+            fetch('http://193.3.23.245:3000//get-records')
                 .then(response => response.json())
                 .then(data => {
                     renderRecords(data);
