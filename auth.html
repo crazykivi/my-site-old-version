@@ -62,23 +62,17 @@
                 },
                 body: JSON.stringify({ password: enteredPassword })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    fetch('http://193.3.23.245:3001/set-cookie', {
-                        method: 'POST'
-                    })
-                    .then(response => response.json())
-                    .then(data => {
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
                         alert(data.message);
                         var passwordModal = bootstrap.Modal.getInstance(document.getElementById('passwordModal'));
                         passwordModal.hide();
-                    });
-                } else {
-                    document.getElementById('errorMessage').style.display = 'block';
-                }
-            })
-            .catch(error => console.error('Ошибка:', error));
+                    } else {
+                        document.getElementById('errorMessage').style.display = 'block';
+                    }
+                })
+                .catch(error => console.error('Ошибка:', error));
         });
     </script>
 
