@@ -71,10 +71,10 @@
             .then(data => {
                 if (data.success) {
                     document.getElementById('add-record-panel').style.display = 'block';
-                    consol.debug("Авторизирован");
+                    console.debug("Авторизирован");
                 } else {
                     document.getElementById('add-record-panel').style.display = 'none';
-                    consol.debug("Не авторизированны");
+                    console.debug("Не авторизированны");
                 }
             })
             .catch(error => {
