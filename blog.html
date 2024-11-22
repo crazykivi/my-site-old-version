@@ -17,6 +17,29 @@
         .page-button {
             cursor: pointer;
         }
+
+        .ql-editor img {
+            max-width: 100%;
+            resize: both;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .ql-align-left {
+            float: left;
+            margin-right: 10px;
+        }
+
+        .ql-align-center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .ql-align-right {
+            float: right;
+            margin-left: 10px;
+        }
     </style>
 </head>
 
@@ -31,6 +54,11 @@
     </header>
 
     <main class="container my-5">
+        <div id="add-record-panel" class="d-none mt-5">
+            <h2>Добавить новую запись</h2>
+            <div id="editor" class="mb-3"></div>
+            <button id="save-button" class="btn btn-success">Сохранить запись</button>
+        </div>
         <div id="records-container">
             <h2>Записи</h2>
             <div id="records-list" class="mb-3">
@@ -41,11 +69,6 @@
             </nav>
         </div>
 
-        <div id="add-record-panel" class="d-none mt-5">
-            <h2>Добавить новую запись</h2>
-            <div id="editor" class="mb-3"></div>
-            <button id="save-button" class="btn btn-success">Сохранить запись</button>
-        </div>
     </main>
 
     <!-- Bootstrap JS -->
@@ -67,14 +90,14 @@
                     [{ 'font': [] }],
                     [{ 'size': ['small', 'medium', 'large'] }],
                     [{ 'color': [] }, { 'background': [] }],
+                    ['image'],
+                    [{ 'align': ['left', 'center', 'right'] }],
                 ]
             }
         });
 
-        // Отображение панели добавления записи
         document.getElementById('add-record-panel').style.display = 'block';
 
-        // Обработчик загрузки изображения
         editor.getModule('toolbar').addHandler('image', function () {
             const fileInput = document.createElement('input');
             fileInput.setAttribute('type', 'file');
@@ -86,7 +109,6 @@
                 const formData = new FormData();
                 formData.append('image', file);
 
-                // Отправка изображения на сервер
                 fetch('http://193.3.23.245:3000/upload-image', {
                     method: 'POST',
                     body: formData,
@@ -94,7 +116,6 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.imageUrl) {
-                            // Вставляем изображение в редактор
                             const range = editor.getSelection();
                             editor.insertEmbed(range.index, 'image', data.imageUrl);
                         }
@@ -103,9 +124,18 @@
             };
         });
 
-        // Сохранение записи с текстом и изображениями
+        editor.getModule('toolbar').addHandler('align', function (value) {
+            const range = editor.getSelection();
+            if (range) {
+                const format = editor.getFormat(range);
+                if (format['align'] !== value) {
+                    editor.format('align', value);
+                }
+            }
+        });
+
         document.getElementById('save-button').addEventListener('click', () => {
-            const newRecord = { content: editor.root.innerHTML }; // Получаем HTML с текстом и изображениями
+            const newRecord = { content: editor.root.innerHTML };
 
             fetch('http://193.3.23.245:3000/save-record', {
                 method: 'POST',
@@ -115,12 +145,11 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Запись сохранена:', data);
-                    editor.root.innerHTML = ''; // Очистить редактор после сохранения
+                    editor.root.innerHTML = '';
                 })
                 .catch(error => console.error('Ошибка при сохранении записи:', error));
         });
 
-        // Загрузка записей с сервера
         function loadRecords(page = 1) {
             fetch(`http://193.3.23.245:3000/get-records?page=${page}`)
                 .then(response => response.json())
@@ -131,7 +160,6 @@
                 .catch(error => console.error('Ошибка загрузки данных:', error));
         }
 
-        // Рендеринг списка записей
         function renderRecords(records) {
             const recordsList = document.getElementById('records-list');
             recordsList.innerHTML = '';
@@ -147,7 +175,6 @@
             });
         }
 
-        // Рендеринг пагинации
         function renderPagination(totalRecords, currentPage) {
             const recordsPerPage = 5;
             const totalPages = Math.ceil(totalRecords / recordsPerPage);
@@ -161,18 +188,16 @@
                 pagination.appendChild(pageItem);
             }
 
-            // Обработчик кликов по страницам
             document.querySelectorAll('.page-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     const page = parseInt(e.target.dataset.page);
-                    loadRecords(page); // Загружаем записи для выбранной страницы
+                    loadRecords(page);
                 });
             });
         }
 
-        loadRecords(); // Загружаем записи при инициализации
-
+        loadRecords();
     </script>
 </body>
 
