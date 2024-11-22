@@ -71,16 +71,41 @@
             }
         });
 
+        // Отображение панели добавления записи
         document.getElementById('add-record-panel').style.display = 'block';
-        /*
-        const hasAccess = document.cookie.includes('auth_token=');
-        if (hasAccess) {
-            document.getElementById('add-record-panel').style.display = 'block';
-        }
-            */
 
+        // Обработчик загрузки изображения
+        editor.getModule('toolbar').addHandler('image', function () {
+            const fileInput = document.createElement('input');
+            fileInput.setAttribute('type', 'file');
+            fileInput.setAttribute('accept', 'image/*');
+            fileInput.click();
+
+            fileInput.onchange = function () {
+                const file = fileInput.files[0];
+                const formData = new FormData();
+                formData.append('image', file);
+
+                // Отправка изображения на сервер
+                fetch('http://193.3.23.245:3000/upload-image', {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.imageUrl) {
+                            // Вставляем изображение в редактор
+                            const range = editor.getSelection();
+                            editor.insertEmbed(range.index, 'image', data.imageUrl);
+                        }
+                    })
+                    .catch(error => console.error('Ошибка загрузки изображения:', error));
+            };
+        });
+
+        // Сохранение записи с текстом и изображениями
         document.getElementById('save-button').addEventListener('click', () => {
-            const newRecord = { content: editor.root.innerHTML };
+            const newRecord = { content: editor.root.innerHTML }; // Получаем HTML с текстом и изображениями
 
             fetch('http://193.3.23.245:3000/save-record', {
                 method: 'POST',
@@ -90,21 +115,23 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Запись сохранена:', data);
-                    editor.root.innerHTML = '';
+                    editor.root.innerHTML = ''; // Очистить редактор после сохранения
                 })
                 .catch(error => console.error('Ошибка при сохранении записи:', error));
         });
 
-        function loadRecords() {
-            fetch('http://193.3.23.245:3000/get-records')
+        // Загрузка записей с сервера
+        function loadRecords(page = 1) {
+            fetch(`http://193.3.23.245:3000/get-records?page=${page}`)
                 .then(response => response.json())
                 .then(data => {
                     renderRecords(data);
-                    renderPagination(data.length);
+                    renderPagination(data.length, page);
                 })
                 .catch(error => console.error('Ошибка загрузки данных:', error));
         }
 
+        // Рендеринг списка записей
         function renderRecords(records) {
             const recordsList = document.getElementById('records-list');
             recordsList.innerHTML = '';
@@ -112,15 +139,16 @@
                 const recordElement = document.createElement('div');
                 recordElement.className = 'card mb-3';
                 recordElement.innerHTML = `
-                    <div class="card-body">
-                        <div class="ql-editor">${record.content}</div>
-                    </div>
-                `;
+                <div class="card-body">
+                    <div class="ql-editor">${record.content}</div>
+                </div>
+            `;
                 recordsList.appendChild(recordElement);
             });
         }
 
-        function renderPagination(totalRecords) {
+        // Рендеринг пагинации
+        function renderPagination(totalRecords, currentPage) {
             const recordsPerPage = 5;
             const totalPages = Math.ceil(totalRecords / recordsPerPage);
             const pagination = document.getElementById('pagination');
@@ -128,21 +156,23 @@
 
             for (let i = 1; i <= totalPages; i++) {
                 const pageItem = document.createElement('li');
-                pageItem.className = `page-item`;
+                pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
                 pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
                 pagination.appendChild(pageItem);
             }
 
+            // Обработчик кликов по страницам
             document.querySelectorAll('.page-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     const page = parseInt(e.target.dataset.page);
-                    console.log(`Переключаем на страницу ${page}`);
+                    loadRecords(page); // Загружаем записи для выбранной страницы
                 });
             });
         }
 
-        loadRecords();
+        loadRecords(); // Загружаем записи при инициализации
+
     </script>
 </body>
 
