@@ -181,28 +181,28 @@
             });
         }
 
+        function renderRecords(records) {
+            const recordsList = document.getElementById('records-list');
+            recordsList.innerHTML = '';
 
-        function renderPagination(totalRecords, currentPage) {
-            const recordsPerPage = 5;
-            const totalPages = Math.ceil(totalRecords / recordsPerPage);
-            const pagination = document.getElementById('pagination');
-            pagination.innerHTML = '';
+            records.forEach(record => {
+                const recordElement = document.createElement('div');
+                recordElement.className = 'card mb-3';
+                recordElement.innerHTML = `
+      <div class="card-body">
+        <div class="ql-editor">${record.content}</div>
+      </div>
+    `;
 
-            for (let i = 1; i <= totalPages; i++) {
-                const pageItem = document.createElement('li');
-                pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
-                pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
-                pagination.appendChild(pageItem);
-            }
-
-            document.querySelectorAll('.page-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const page = parseInt(e.target.dataset.page);
-                    loadRecords(page);
+                const imgTags = recordElement.querySelectorAll('img');
+                imgTags.forEach(img => {
+                    img.src = img.src.replace('http://193.3.23.245:3000http://193.3.23.245:3000', 'http://193.3.23.245:3000');
                 });
+
+                recordsList.appendChild(recordElement);
             });
         }
+
 
         loadRecords();
     </script>
