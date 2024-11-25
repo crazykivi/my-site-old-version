@@ -60,7 +60,8 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ password: enteredPassword })
+                body: JSON.stringify({ password: enteredPassword }),
+                credentials: 'include'
             })
                 .then(response => response.json())
                 .then(data => {
