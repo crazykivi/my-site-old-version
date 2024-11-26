@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+      - /etc/nginx/certs
+    environment:
+      - DEFAULT_HOST=nikitaredko.ru
+    networks:
+      - web
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    container_name: acme-companion
+    restart: always
+    depends_on:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/nginx/certs
+    environment:
+      - DEFAULT_EMAIL=nik.ita-redko@yandex.ru
+    networks:
+      - web
+
+  app:
+    image: ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
+    container_name: my-site-container
+    expose:
+      - "80"
+    environment:
+      - VIRTUAL_HOST=nikitaredko.ru,www.nikitaredko.ru
+      - LETSENCRYPT_HOST=nikitaredko.ru,www.nikitaredko.ru
+      - LETSENCRYPT_EMAIL=nik.ita-redko@yandex.ru
+    networks:
+      - web
+
+networks:
+  web:
+    driver: bridge
