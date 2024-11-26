@@ -63,7 +63,7 @@
             }
         });
 
-        fetch('http://193.3.23.245:3001/check-token', {
+        fetch('https://nikitaredko.ru:3001/check-token', {
             method: 'POST',
             credentials: 'include',
         })
@@ -93,7 +93,7 @@
                 const formData = new FormData();
                 formData.append('image', file);
 
-                fetch('http://193.3.23.245:3000/upload-image', {
+                fetch('https://nikitaredko.ru:3000/upload-image', {
                     method: 'POST',
                     body: formData,
                 })
@@ -121,7 +121,7 @@
         document.getElementById('save-button').addEventListener('click', () => {
             const newRecord = { content: editor.root.innerHTML };
 
-            fetch('http://193.3.23.245:3000/save-record', {
+            fetch('https://nikitaredko.ru:3000/save-record', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newRecord)
