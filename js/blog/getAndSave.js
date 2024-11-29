@@ -3,7 +3,7 @@ const editor = new Quill("#editor", {
   theme: "snow",
   modules: {
     toolbar: [
-      ["bold", "italic", "underline", "strike"],
+      ["bold", "italic", "underline", "strike", "image"],
       ["link", "image"],
       [{ list: "ordered" }, { list: "bullet" }],
       [{ align: [] }],
