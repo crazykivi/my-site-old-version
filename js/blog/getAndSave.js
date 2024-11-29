@@ -28,7 +28,7 @@ fetch("https://nikitaredko.ru:3001/check-token", {
       console.debug("Авторизирован");
     } else {
       addRecordPanel.classList.add("d-none");
-      console.debug("Не авторизирован");
+      //console.debug("Не авторизирован");
     }
   })
   .catch((error) => {
@@ -125,7 +125,7 @@ document.getElementById("save-button").addEventListener("click", () => {
       console.error("Ошибка при проверке токена:", error);
     });
 });
-
+/*
 document.getElementById("upload-image-button").addEventListener("click", () => {
   fetch("https://nikitaredko.ru:3001/check-token", {
     method: "POST",
@@ -160,3 +160,4 @@ document.getElementById("upload-image-button").addEventListener("click", () => {
       console.error("Ошибка при проверке токена:", error);
     });
 });
+*/
