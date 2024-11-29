@@ -11,13 +11,13 @@ function deleteRecord(recordId) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ token, recordId }), // Отправляем token и id записи
+    body: JSON.stringify({ token, recordId }),
   })
     .then((response) => response.json())
     .then((data) => {
       if (data.message) {
         alert(data.message);
-        loadRecords(); // Перезагружаем список записей после удаления
+        loadRecords();
       } else {
         console.error("Ошибка удаления:", data.error);
       }

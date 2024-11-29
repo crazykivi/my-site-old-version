@@ -94,6 +94,7 @@ document.getElementById("save-button").addEventListener("click", () => {
     .then((data) => {
       console.log("Запись сохранена:", data);
       editor.root.innerHTML = "";
+      loadRecords();
     })
     .catch((error) => {
       console.error("Ошибка при сохранении записи:", error);
