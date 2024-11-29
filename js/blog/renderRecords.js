@@ -1,4 +1,5 @@
 function renderRecords(records) {
+  const token = localStorage.getItem("token");
   const recordsList = document.getElementById("records-list");
   recordsList.innerHTML = "";
 
