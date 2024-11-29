@@ -72,6 +72,7 @@ editor.getModule("toolbar").addHandler("align", function (value) {
   }
 });
 
+/*
 document.getElementById("save-button").addEventListener("click", () => {
   const newRecord = { content: editor.root.innerHTML };
 
@@ -87,4 +88,75 @@ document.getElementById("save-button").addEventListener("click", () => {
       editor.root.innerHTML = "";
     })
     .catch((error) => console.error("Ошибка при сохранении записи:", error));
+});
+*/
+document.getElementById("save-button").addEventListener("click", () => {
+  // Проверка токена перед отправкой записи
+  fetch("https://nikitaredko.ru:3001/check-token", {
+    method: "POST",
+    credentials: "include",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        // Если токен валиден, отправляем запись
+        const newRecord = { content: editor.root.innerHTML };
+
+        fetch("https://nikitaredko.ru:3000/save-record", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newRecord),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Запись сохранена:", data);
+            editor.root.innerHTML = "";
+          })
+          .catch((error) =>
+            console.error("Ошибка при сохранении записи:", error)
+          );
+      } else {
+        // Если токен недействителен
+        console.log("Пользователь не авторизован");
+      }
+    })
+    .catch((error) => {
+      console.error("Ошибка при проверке токена:", error);
+    });
+});
+
+document.getElementById("upload-image-button").addEventListener("click", () => {
+  fetch("https://nikitaredko.ru:3001/check-token", {
+    method: "POST",
+    credentials: "include",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        const formData = new FormData();
+        formData.append(
+          "image",
+          document.getElementById("image-upload").files[0]
+        );
+
+        fetch("https://nikitaredko.ru:3000/upload-image", {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Изображение загружено:", data);
+          })
+          .catch((error) =>
+            console.error("Ошибка при загрузке изображения:", error)
+          );
+      } else {
+        console.log("Пользователь не авторизован");
+      }
+    })
+    .catch((error) => {
+      console.error("Ошибка при проверке токена:", error);
+    });
 });
