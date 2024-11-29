@@ -11,9 +11,10 @@ function renderRecords(records) {
             </div>`;
 
     const imgTags = recordElement.querySelectorAll("img");
+    /*
     imgTags.forEach((img) => {
       console.log("Image source:", img.src);
-    });
+    }); */
 
     recordsList.appendChild(recordElement);
   });

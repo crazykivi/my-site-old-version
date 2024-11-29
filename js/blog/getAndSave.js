@@ -90,6 +90,7 @@ document.getElementById("save-button").addEventListener("click", () => {
     .catch((error) => console.error("Ошибка при сохранении записи:", error));
 });
 */
+/*
 document.getElementById("save-button").addEventListener("click", () => {
   // Проверка токена перед отправкой записи
   fetch("https://nikitaredko.ru:3001/check-token", {
@@ -125,6 +126,35 @@ document.getElementById("save-button").addEventListener("click", () => {
       console.error("Ошибка при проверке токена:", error);
     });
 });
+*/
+document.getElementById("save-button").addEventListener("click", () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    console.log("Пользователь не авторизован");
+    return;
+  }
+
+  const newRecord = { content: editor.root.innerHTML, token };
+
+  fetch("https://nikitaredko.ru:3000/save-record", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: JSON.stringify(newRecord),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Запись сохранена:", data);
+      editor.root.innerHTML = "";
+    })
+    .catch((error) => {
+      console.error("Ошибка при сохранении записи:", error);
+    });
+});
+
 /*
 document.getElementById("upload-image-button").addEventListener("click", () => {
   fetch("https://nikitaredko.ru:3001/check-token", {
