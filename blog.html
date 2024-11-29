@@ -178,7 +178,7 @@
         }
 
         function loadRecords(page = 1) {
-            fetch(`http://193.3.23.245:3000/get-records?page=${page}`)
+            fetch(`https://nikitaredko.ru:3000/get-records?page=${page}`)
                 .then(response => response.json())
                 .then(data => {
                     renderRecords(data.records);
