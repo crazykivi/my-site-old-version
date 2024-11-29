@@ -11,6 +11,24 @@ function renderRecords(records) {
             </div>`;
 
     const imgTags = recordElement.querySelectorAll("img");
+
+    if (token) {
+      const deleteButton = document.createElement("button");
+      deleteButton.className = "btn btn-danger";
+      deleteButton.textContent = "Удалить";
+      deleteButton.setAttribute("data-id", record.id); // Устанавливаем атрибут с ID записи
+
+      // Добавляем обработчик на кнопку удаления
+      deleteButton.addEventListener("click", () => {
+        deleteRecord(record.id); // Удаляем запись
+      });
+
+      // Добавляем кнопку удаления в карточку записи
+      const cardFooter = document.createElement("div");
+      cardFooter.className = "card-footer";
+      cardFooter.appendChild(deleteButton);
+      recordElement.appendChild(cardFooter);
+    }
     /*
     imgTags.forEach((img) => {
       console.log("Image source:", img.src);
