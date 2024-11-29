@@ -13,6 +13,17 @@ function renderRecords(records) {
 
     const imgTags = recordElement.querySelectorAll("img");
 
+    // Код для отображение картинок с гитхаба
+    imgTags.forEach((img) => {
+      const src = img.src;
+      if (src.includes("github.com")) {
+        img.src = src;
+        img.alt = "Image from GitHub";
+        img.style.maxWidth = "100%"; 
+        img.style.height = "auto";
+      }
+    });
+
     if (token) {
       const deleteButton = document.createElement("button");
       deleteButton.className = "btn btn-danger";
