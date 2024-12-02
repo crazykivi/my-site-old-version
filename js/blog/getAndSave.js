@@ -78,16 +78,7 @@ editor.getModule("toolbar").addHandler("align", function (value) {
   }
 });
 
-let editRecordId = null;
-
-function editRecord(id, content) {
-  editRecordId = id;
-  const editor = document.getElementById("editor");
-  editor.root.innerHTML = content;
-  const saveButton = document.getElementById("save-button");
-  saveButton.textContent = "Сохранить изменения";
-}
-
+/*
 document.getElementById("save-button").addEventListener("click", () => {
   if (!token) {
     console.log("Пользователь не авторизован");
@@ -113,4 +104,57 @@ document.getElementById("save-button").addEventListener("click", () => {
     .catch((error) => {
       console.error("Ошибка при сохранении записи:", error);
     });
+});*/
+
+let editRecordId = null; 
+
+function editRecord(id, content) {
+  editRecordId = id; 
+  const editor = document.getElementById("editor");
+  editor.root.innerHTML = content; 
+
+  const saveButton = document.getElementById("save-button");
+  saveButton.textContent = "Сохранить изменения";
+}
+
+document.getElementById("save-button").addEventListener("click", () => {
+  if (!token) {
+    console.log("Пользователь не авторизован");
+    return;
+  }
+
+  const content = editor.root.innerHTML;
+
+  const recordData = {
+    content: content,
+    token: token,
+  };
+
+  if (editRecordId) {
+    recordData.id = editRecordId;
+  }
+
+  fetch("https://nikitaredko.ru:3000/save-record", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(recordData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Запись сохранена:", data);
+
+      editor.root.innerHTML = "";
+      editRecordId = null; 
+
+      loadRecords();
+      const saveButton = document.getElementById("save-button");
+      saveButton.textContent = "Сохранить запись";
+    })
+    .catch((error) => {
+      console.error("Ошибка при сохранении записи:", error);
+    });
 });
+
