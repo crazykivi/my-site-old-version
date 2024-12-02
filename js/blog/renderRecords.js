@@ -7,8 +7,7 @@ function renderRecords(records) {
     recordElement.className = "card mb-3";
 
     recordElement.innerHTML = `<div class="card-body">
-      <div class="ql-editor" contenteditable="true" data-id="${record.id}">${record.content}
-      </div>
+    <div class="ql-editor" data-id="${record.id}">${record.content}</div>
     </div>`;
     if (token) {
       const deleteButton = document.createElement("button");
