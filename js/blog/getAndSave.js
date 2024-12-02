@@ -3,7 +3,7 @@ const editor = new Quill("#editor", {
   theme: "snow",
   modules: {
     toolbar: [
-      ["bold", "italic", "underline", "strike", "image"],
+      ["bold", "italic", "underline", "strike"],
       ["link", "image"],
       [{ list: "ordered" }, { list: "bullet" }],
       [{ align: [] }],
@@ -16,8 +16,12 @@ const editor = new Quill("#editor", {
   },
 });
 
-fetch("https://nikitaredko.ru:3001/check-token", {
+fetch("https://nikitaredko.ru:3001/check-auth-token", {
   method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`,
+  },
   credentials: "include",
 })
   .then((response) => response.json())
