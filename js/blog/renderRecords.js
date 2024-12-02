@@ -11,26 +11,10 @@ function renderRecords(records) {
     contentContainer.className = "card-body";
 
     const parser = new DOMParser();
-    //const parsedContent = parser.parseFromString(record.content, "text/html");
+    const parsedContent = parser.parseFromString(record.content, "text/html");
 
-    contentContainer.innerHTML = record.content;
-
-    const imgTags = contentContainer.querySelectorAll("img");
-    imgTags.forEach((img) => {
-      if (!img.src) {
-        img.src = "img/default-image.jpg";
-      }
-
-      img.onerror = () => {
-        img.src = "img/default-image.jpg";
-      };
-      console.log(record.content); 
-    });
-
+    contentContainer.appendChild(parsedContent.body);
     recordElement.appendChild(contentContainer);
-
-    // contentContainer.appendChild(parsedContent.body);
-    // recordElement.appendChild(contentContainer);
 
     if (token) {
       const deleteButton = document.createElement("button");
