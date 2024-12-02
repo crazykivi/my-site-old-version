@@ -16,11 +16,18 @@ const editor = new Quill("#editor", {
   },
 });
 
+const token = localStorage.getItem("token");
+
+if (!token) {
+  console.debug("Пользователь не авторизован");
+  return;
+}
+
 fetch("https://nikitaredko.ru:3001/check-auth-token", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${token}`,
+    Authorization: `Bearer ${token}`,
   },
   credentials: "include",
 })
@@ -90,7 +97,7 @@ document.getElementById("save-button").addEventListener("click", () => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(newRecord),
   })
