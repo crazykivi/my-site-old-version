@@ -26,6 +26,8 @@ function renderRecords(records) {
       };
     });
 
+    recordElement.appendChild(contentContainer);
+
     // contentContainer.appendChild(parsedContent.body);
     // recordElement.appendChild(contentContainer);
 
