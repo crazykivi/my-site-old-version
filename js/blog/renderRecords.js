@@ -11,7 +11,7 @@ function renderRecords(records) {
     contentContainer.className = "card-body";
 
     const parser = new DOMParser();
-    const parsedContent = parser.parseFromString(record.content, "text/html");
+    //const parsedContent = parser.parseFromString(record.content, "text/html");
 
     contentContainer.innerHTML = record.content;
 
@@ -25,8 +25,6 @@ function renderRecords(records) {
         img.src = "img/default-image.jpg";
       };
     });
-
-    recordElement.appendChild(contentContainer);
 
     // contentContainer.appendChild(parsedContent.body);
     // recordElement.appendChild(contentContainer);
