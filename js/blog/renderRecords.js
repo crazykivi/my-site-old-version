@@ -4,27 +4,23 @@ function renderRecords(records) {
   recordsList.innerHTML = "";
 
   records.forEach((record) => {
-    /*
     const recordElement = document.createElement("div");
     recordElement.className = "card mb-3";
 
-    recordElement.innerHTML = `<div class="card-body">
-            <div class="ql-editor">${record.content}</div>
-            </div>`;
-
-    recordElement.appendChild(contentContainer);
-    */
-
-    const recordElement = document.createElement("div");
-    recordElement.className = "card mb-3";
-  
     const contentContainer = document.createElement("div");
     contentContainer.className = "card-body";
-  
+
     const parser = new DOMParser();
     const parsedContent = parser.parseFromString(record.content, "text/html");
   
-    contentContainer.appendChild(parsedContent.body.firstChild);
+    const imgTags = parsedContent.querySelectorAll("img");
+    imgTags.forEach((img) => {
+      if (!img.src) {
+      img.src = "img/default-image.jpg";
+      }
+    });
+
+    contentContainer.appendChild(parsedContent.body);
     recordElement.appendChild(contentContainer);
 
     if (token) {
@@ -42,12 +38,7 @@ function renderRecords(records) {
       cardFooter.appendChild(deleteButton);
       recordElement.appendChild(cardFooter);
     }
-    /*
-    const imgTags = recordElement.querySelectorAll("img");
 
-    imgTags.forEach((img) => {
-      console.log("Image source:", img.src);
-    }); */
     recordsList.appendChild(recordElement);
   });
 }
