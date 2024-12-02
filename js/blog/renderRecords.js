@@ -12,16 +12,24 @@ function renderRecords(records) {
 
     const parser = new DOMParser();
     const parsedContent = parser.parseFromString(record.content, "text/html");
-  
-    const imgTags = parsedContent.querySelectorAll("img");
+
+    contentContainer.innerHTML = record.content;
+
+    const imgTags = contentContainer.querySelectorAll("img");
     imgTags.forEach((img) => {
       if (!img.src) {
-      img.src = "img/default-image.jpg";
+        img.src = "img/default-image.jpg";
       }
+
+      img.onerror = () => {
+        img.src = "img/default-image.jpg";
+      };
     });
 
-    contentContainer.appendChild(parsedContent.body);
     recordElement.appendChild(contentContainer);
+
+    // contentContainer.appendChild(parsedContent.body);
+    // recordElement.appendChild(contentContainer);
 
     if (token) {
       const deleteButton = document.createElement("button");
