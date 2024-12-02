@@ -18,9 +18,19 @@ function renderRecords(records) {
       deleteButton.addEventListener("click", () => {
         deleteRecord(record.id);
       });
+
+      const editButton = document.createElement("button");
+      editButton.className = "btn btn-warning ms-2";
+      editButton.textContent = "Редактировать";
+      editButton.setAttribute("data-id", record.id);
+      editButton.addEventListener("click", () => {
+        editRecord(record.id, record.content);
+      });
+
       const cardFooter = document.createElement("div");
       cardFooter.className = "card-footer";
       cardFooter.appendChild(deleteButton);
+      cardFooter.appendChild(editButton);
       recordElement.appendChild(cardFooter);
     }
     /*
