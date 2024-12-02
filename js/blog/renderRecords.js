@@ -4,18 +4,27 @@ function renderRecords(records) {
   recordsList.innerHTML = "";
 
   records.forEach((record) => {
+    /*
     const recordElement = document.createElement("div");
     recordElement.className = "card mb-3";
 
-    /*
     recordElement.innerHTML = `<div class="card-body">
             <div class="ql-editor">${record.content}</div>
             </div>`;
-            */
+
+    recordElement.appendChild(contentContainer);
+    */
+
+    const recordElement = document.createElement("div");
+    recordElement.className = "card mb-3";
+  
     const contentContainer = document.createElement("div");
     contentContainer.className = "card-body";
-    contentContainer.innerHTML = `<div class="ql-editor">${record.content}</div>`; // Вставляем HTML
-
+  
+    const parser = new DOMParser();
+    const parsedContent = parser.parseFromString(record.content, "text/html");
+  
+    contentContainer.appendChild(parsedContent.body.firstChild);
     recordElement.appendChild(contentContainer);
 
     if (token) {
