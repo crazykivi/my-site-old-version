@@ -1,3 +1,5 @@
+const token = localStorage.getItem("token");
+
 // Инициализация Quill.js
 const editor = new Quill("#editor", {
   theme: "snow",
@@ -15,13 +17,6 @@ const editor = new Quill("#editor", {
     ],
   },
 });
-
-const token = localStorage.getItem("token");
-
-if (!token) {
-  console.debug("Пользователь не авторизован");
-  return;
-}
 
 fetch("https://nikitaredko.ru:3001/check-auth-token", {
   method: "POST",
@@ -84,8 +79,6 @@ editor.getModule("toolbar").addHandler("align", function (value) {
 });
 
 document.getElementById("save-button").addEventListener("click", () => {
-  const token = localStorage.getItem("token");
-
   if (!token) {
     console.log("Пользователь не авторизован");
     return;
