@@ -109,9 +109,8 @@ document.getElementById("save-button").addEventListener("click", () => {
 let editRecordId = null; 
 
 function editRecord(id, content) {
-  editRecordId = id; 
-  const editor = document.getElementById("editor");
-  editor.root.innerHTML = content; 
+  editRecordId = id;
+  editor.root.innerHTML = content;
 
   const saveButton = document.getElementById("save-button");
   saveButton.textContent = "Сохранить изменения";
