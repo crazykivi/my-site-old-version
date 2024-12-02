@@ -24,6 +24,7 @@ function renderRecords(records) {
       img.onerror = () => {
         img.src = "img/default-image.jpg";
       };
+      console.log(record.content); 
     });
 
     recordElement.appendChild(contentContainer);
