@@ -15,8 +15,8 @@
         <div class="container d-flex justify-content-between">
             <h1 class="h4">Главная страница</h1>
             <nav>
+                <a href="/projects.html" class="text-white text-decoration-none mx-2">Проекты</a>
                 <a href="/blog.html" class="text-white text-decoration-none mx-2">Блог</a>
-                <a href="#projects" class="text-white text-decoration-none mx-2">Проекты</a>
                 <a href="#about" class="text-white text-decoration-none mx-2">О себе</a>
                 <a href="#aboutSite" class="text-white text-decoration-none mx-2">О сайте</a>
                 <a href="#links" class="text-white text-decoration-none mx-2">Ссылки</a>
@@ -26,9 +26,149 @@
 
     <section id="projects" class="py-5">
         <div class="container">
-            <h2 class="mb-4">Проекты</h2>
+            <h2 class="mb-4">Последние проекты</h2>
             <div class="row g-4" id="projects-list">
 
+                <div class="col-md-6 col-lg-4">
+                    <div class="card">
+                        <a href="http://31.128.36.243/tsd/">
+                            <img src="https://raw.githubusercontent.com/crazykivi/repo_img_for_site/refs/heads/main/blog-img/emulator-tsd.png"
+                                class="card-img-top" alt="Каталог Хозкома">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">Эмулятор ТСД для Хозкома (только для мобильных)</h5>
+
+                            <p><strong>Стек технологий:</strong>
+                                <br>Фронтенд: JavaScript, JQuery, AJAX.
+                                <br>Бекенд: Node.js, PHP, MySQL, Apache2.
+                            </p>
+
+                            <a href="http://31.128.36.243/tsd/" class="btn btn-primary btn-sm">Перейти к
+                                проекту</a>
+
+                            <button class="btn btn-link" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#aboutProject2" aria-expanded="false" aria-controls="aboutProject"
+                                id="toggleButton">
+                                Подробнее о проекте
+                            </button>
+
+                            <div class="collapse" id="aboutProject2">
+                                <p><br>В рамках этого проекта был внедрён
+                                    эмулятор ТСД, который имитирует работу терминала для ввода товаров.
+                                    Система позволяет покупателям сканировать вводить коды и количества товара,
+                                    автоматически сохраняя их заказ. Эмулятор ТСД позволяет ускорить
+                                    процесс обработки заказов и минимизировать ошибки, обеспечивая при этом точность
+                                    учета товаров.
+                                </p>
+                                <p>Сайт адаптирован для правшей/левшей.
+                                    Также сайт интегрирован с системой 1С через API на Node.js, что позволяет
+                                    синхронизировать данные о заявках в реальном времени. API
+                                    обрабатывает запросы между веб-платформой и базой данных 1С, обеспечивая
+                                    автоматическое обновление информации о заказах клиентов.
+                                </p>
+                                <p>
+                                    <u>Обратите внимание, что сайт пока не имеет привязанного домена, и SSL-сертификаты
+                                        не установлены!</u>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card">
+                        <a href="https://nikitaredko.ru/">
+                            <img src="https://raw.githubusercontent.com/crazykivi/repo_img_for_site/refs/heads/main/blog-img/my-site.png"
+                                class="card-img-top" alt="Каталог Хозкома">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">Мой личный сайт</h5>
+
+                            <p><strong>Стек технологий:</strong>
+                                <br>Фронтенд: JavaScript, Bootstrap.
+                                <br>Бекенд: Nginx, Clickhouse, Docker (для развертывания).
+                            </p>
+
+                            <a href="https://nikitaredko.ru/" class="btn btn-primary btn-sm">Перейти к
+                                проекту</a>
+
+                            <button class="btn btn-link" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#aboutProject3" aria-expanded="false" aria-controls="aboutProject"
+                                id="toggleButton">
+                                Подробнее о проекте
+                            </button>
+
+                            <div class="collapse" id="aboutProject3">
+                                <p><br>Это мой личный сайт, на котором я планирую размещать информацию о своих проектах.
+                                    ClickHouse используется для сохранения данных по блогу.
+                                </p>
+                                <p> Сайт развернут в контейнере Docker с использованием веб-сервера Nginx. Все изменения
+                                    в проекте осуществляются через систему контроля версий GitHub. Внесенные изменения
+                                    автоматически загружаются в <a
+                                        href="https://github.com/crazykivi/my-site">репозиторий
+                                        на GitHub</a>.
+                                <p> Для автоматизации процесса развертывания используется GitHub Actions. Это позволяет
+                                    контейнеру с новым кодом автоматически разворачиваться на сервере каждый раз при
+                                    обновлении репозитория. Таким образом, любые изменения, отправленные в репозиторий
+                                    на GitHub, автоматически обновляют сайт без необходимости вручную развертывать
+                                    изменения.
+                                </p>
+                                <p> Контейнер получает настройки Nginx с виртуальной машины, однако в дальнейшем
+                                    планируется оптимизация этого процесса. Также был добавлен SSL сертификат.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card">
+                        <a href="https://github.com/crazykivi/music_libraryGo/">
+                            <img src="https://raw.githubusercontent.com/crazykivi/repo_img_for_site/refs/heads/main/blog-img/zapros.png"
+                                class="card-img-top" alt="Музыкальная библиотека">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">Тестовое задание "Реализация онлайн библиотеки песен" на вакансию "GO
+                                Developer (Junior)"</h5>
+
+                            <p><strong>Стек технологий:</strong>
+                                <br>Фронтенд: Отсутствует, запросы делаются через http.
+                                <br>Бекенд: Go, PostgreSQL.
+                            </p>
+
+                            <a href="https://github.com/crazykivi/music_libraryGo/"
+                                class="btn btn-primary btn-sm">Перейти к
+                                проекту</a>
+
+                            <button class="btn btn-link" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#aboutProject8" aria-expanded="false" aria-controls="aboutProject"
+                                id="toggleButton">
+                                Подробнее о проекте
+                            </button>
+
+                            <div class="collapse" id="aboutProject8">
+                                <p><br>Проект представляет собой создание онлайн библиотеки песен, с возможностью
+                                    добавления, удаления, а также получения информации о них
+                                    через REST API. Система предоставляет фильтрацию, пагинацию и интеграцию с внешним
+                                    API для получения подробной информации о песнях, включая текст, дату релиза и ссылку
+                                    на источник. Библиотека работает с базой данных PostgreSQL, данные для которой
+                                    создаются с помощью миграций.</p>
+                                <p>Основной функционал проекта включает:</p>
+                                <ul>
+                                    <li>Реализацию REST методов для работы с песнями (получение, добавление, удаление);
+                                    </li>
+                                    <li>Интеграцию с внешним API для получения дополнительной информации о песнях;</li>
+                                    <li>Фильтрацию и пагинацию при получении данных о песнях;</li>
+                                    <li>Запрос к внешнему API при добавлении новой песни;</li>
+                                    <li>Хранение данных в базе данных PostgreSQL с использованием миграций;</li>
+                                    <li>Логирование с использованием debug- и info-логов;</li>
+                                    <li>Хранение конфигурационных данных в .env-файле;</li>
+                                    <li>Генерацию Swagger документации для созданного API.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
