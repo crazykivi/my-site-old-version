@@ -2,8 +2,9 @@ function loadProjects(page = 1) {
   fetch(`https://nikitaredko.ru:3000/get-projects?page=${page}`)
     .then((response) => response.json())
     .then((data) => {
-        renderProjects(data.projects);
-        renderPagination(data.totalRecords, page);
+      renderProjects(data.projects);
+      renderPagination(data.totalRecords, page);
+      console.log("Полученные проекты:", data.projects);
     })
     .catch((error) => console.error("Ошибка загрузки данных:", error));
 }
@@ -37,41 +38,45 @@ function renderProjects(projects) {
   projectsList.innerHTML = "";
 
   projects.forEach((project) => {
+    const featuresList = Array.isArray(project.features)
+      ? project.features
+      : [];
+
     const projectElement = document.createElement("div");
     projectElement.className = "col-md-6 col-lg-4";
 
     projectElement.innerHTML = `
-        <div class="card">
-          <a href="${project.githubUrl}">
-            <img src="${project.imageUrl}" class="card-img-top" alt="${
+          <div class="card">
+            <a href="${project.githubUrl}">
+              <img src="${project.imageUrl}" class="card-img-top" alt="${
       project.title
     }">
-          </a>
-          <div class="card-body">
-            <h5 class="card-title">${project.title}</h5>
-            <p><strong>Стек технологий:</strong><br>Фронтенд: ${
-              project.frontendStack
-            }<br>Бекенд: ${project.backendStack}</p>
-            <a href="${
-              project.githubUrl
-            }" class="btn btn-primary btn-sm">Перейти к проекту</a>
-            <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#aboutProject${
-              project.id
-            }" aria-expanded="false" aria-controls="aboutProject">
-              Подробнее о проекте
-            </button>
-            <div class="collapse" id="aboutProject${project.id}">
-              <p>${project.description}</p>
-              <p>Ключевые особенности проекта:</p>
-              <ul>
-                ${project.features
-                  .map((feature) => `<li>${feature}</li>`)
-                  .join("")}
-              </ul>
+            </a>
+            <div class="card-body">
+              <h5 class="card-title">${project.title}</h5>
+              <p><strong>Стек технологий:</strong><br>Фронтенд: ${
+                project.frontendStack
+              }<br>Бекенд: ${project.backendStack}</p>
+              <a href="${
+                project.githubUrl
+              }" class="btn btn-primary btn-sm">Перейти к проекту</a>
+              <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#aboutProject${
+                project.id
+              }" aria-expanded="false" aria-controls="aboutProject">
+                Подробнее о проекте
+              </button>
+              <div class="collapse" id="aboutProject${project.id}">
+                <p>${project.description}</p>
+                <p>Ключевые особенности проекта:</p>
+                <ul>
+                  ${featuresList
+                    .map((feature) => `<li>${feature}</li>`)
+                    .join("")}
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
-      `;
+        `;
 
     projectsList.appendChild(projectElement);
   });
