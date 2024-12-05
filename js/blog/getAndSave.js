@@ -1,4 +1,5 @@
 const token = localStorage.getItem("token");
+let auth = false;
 
 // Инициализация Quill.js
 const editor = new Quill("#editor", {
@@ -32,9 +33,11 @@ fetch("https://nikitaredko.ru:3001/check-auth-token", {
     if (data.success) {
       addRecordPanel.classList.remove("d-none");
       console.debug("Авторизирован");
+      auth=true;
     } else {
       addRecordPanel.classList.add("d-none");
       //console.debug("Не авторизирован");
+      auth=false;
     }
   })
   .catch((error) => {

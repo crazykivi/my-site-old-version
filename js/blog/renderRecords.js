@@ -9,7 +9,7 @@ function renderRecords(records) {
     recordElement.innerHTML = `<div class="card-body">
     <div class="ql-editor" data-id="${record.id}">${record.content}</div>
     </div>`;
-    if (token) {
+    if (auth) {
       const deleteButton = document.createElement("button");
       deleteButton.className = "btn btn-danger";
       deleteButton.textContent = "Удалить";
