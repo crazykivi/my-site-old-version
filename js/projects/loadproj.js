@@ -2,8 +2,8 @@ function loadProjects(page = 1) {
   fetch(`https://nikitaredko.ru:3000/get-projects?page=${page}`)
     .then((response) => response.json())
     .then((data) => {
-      renderProjects(data.records);
-      renderPagination(data.totalRecords, page);
+        renderProjects(data.projects);
+        renderPagination(data.totalRecords, page);
     })
     .catch((error) => console.error("Ошибка загрузки данных:", error));
 }
