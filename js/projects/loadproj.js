@@ -38,41 +38,32 @@ function renderProjects(projects) {
   projectsList.innerHTML = "";
 
   projects.forEach((project) => {
-    const featuresList = Array.isArray(project.features)
-      ? project.features
-      : [];
-
     const projectElement = document.createElement("div");
     projectElement.className = "col-md-6 col-lg-4";
 
     projectElement.innerHTML = `
           <div class="card">
-            <a href="${project.githubUrl}">
-              <img src="${project.imageUrl}" class="card-img-top" alt="${
-      project.title
+            <a href="${project.project_url}">
+              <img src="${project.image_url}" class="card-img-top" alt="${
+      project.project_name
     }">
             </a>
             <div class="card-body">
-              <h5 class="card-title">${project.title}</h5>
-              <p><strong>Стек технологий:</strong><br>Фронтенд: ${
-                project.frontendStack
-              }<br>Бекенд: ${project.backendStack}</p>
+              <h5 class="card-title">${project.project_name}</h5>
+              <p><strong>Стек технологий:</strong><br>
+                Фронтенд: ${project.frontend_technologies || "Не указан"}<br>
+                Бекенд: ${project.backend_technologies || "Не указан"}
+              </p>
               <a href="${
-                project.githubUrl
+                project.project_url
               }" class="btn btn-primary btn-sm">Перейти к проекту</a>
               <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#aboutProject${
-                project.id
+                project.project_id
               }" aria-expanded="false" aria-controls="aboutProject">
                 Подробнее о проекте
               </button>
-              <div class="collapse" id="aboutProject${project.id}">
-                <p>${project.description}</p>
-                <p>Ключевые особенности проекта:</p>
-                <ul>
-                  ${featuresList
-                    .map((feature) => `<li>${feature}</li>`)
-                    .join("")}
-                </ul>
+              <div class="collapse" id="aboutProject${project.project_id}">
+                <p>${project.description || "Описание отсутствует."}</p>
               </div>
             </div>
           </div>
