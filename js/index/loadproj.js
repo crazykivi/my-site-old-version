@@ -1,46 +1,40 @@
 function loadProjects() {
-  fetch(`https://nikitaredko.ru:3000/get-records-index`)
+  fetch(`https://nikitaredko.ru:3000/get-projects-index`)
     .then((response) => response.json())
     .then((data) => {
-      renderProjects(data.records);
-      console.log("Полученные проекты:", data.records);
+      renderProjects(data.projects);
+      console.log("Полученные проекты:", data.projects);
     })
     .catch((error) => console.error("Ошибка загрузки данных:", error));
 }
 
 loadProjects();
 
-function renderProjects(records) {
+function renderProjects(projects) {
   const projectsList = document.getElementById("projects-list");
-  projectsList.innerHTML = ""; 
+  projectsList.innerHTML = "";
 
-  records.forEach((record) => {
+  projects.forEach((project) => {
     const projectElement = document.createElement("div");
     projectElement.className = "col-md-6 col-lg-4";
 
     projectElement.innerHTML = `
       <div class="card">
-        <a href="${record.project_url}">
-          <img src="${record.image_url}" class="card-img-top" alt="${
-      record.project_name
-    }">
+        <a href="${project.project_url}">
+          <img src="${project.image_url}" class="card-img-top" alt="${project.project_name}">
         </a>
         <div class="card-body">
-          <h5 class="card-title">${record.project_name}</h5>
+          <h5 class="card-title">${project.project_name}</h5>
           <p><strong>Стек технологий:</strong><br>
-            Фронтенд: ${record.frontend_technologies || "Не указан"}<br>
-            Бекенд: ${record.backend_technologies || "Не указан"}
+            Фронтенд: ${project.frontend_technologies || "Не указан"}<br>
+            Бекенд: ${project.backend_technologies || "Не указан"}
           </p>
-          <a href="${
-            record.project_url
-          }" class="btn btn-primary btn-sm">Перейти к проекту</a>
-          <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#aboutProject${
-            record.project_id
-          }" aria-expanded="false" aria-controls="aboutProject">
+          <a href="${project.project_url}" class="btn btn-primary btn-sm">Перейти к проекту</a>
+          <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#aboutProject${project.project_id}" aria-expanded="false" aria-controls="aboutProject">
             Подробнее о проекте
           </button>
-          <div class="collapse" id="aboutProject${record.project_id}">
-            <p>${record.description || "Описание отсутствует."}</p>
+          <div class="collapse" id="aboutProject${project.project_id}">
+            <p>${project.description || "Описание отсутствует."}</p>
           </div>
         </div>
       </div>
@@ -49,3 +43,4 @@ function renderProjects(records) {
     projectsList.appendChild(projectElement);
   });
 }
+
