@@ -4,7 +4,7 @@ function loadProjects(page = 1) {
     .then((data) => {
       renderProjects(data.projects);
       renderPagination(data.totalRecords, page);
-      console.log("Полученные проекты:", data.projects);
+      //console.debug("Полученные проекты:", data.projects);
     })
     .catch((error) => console.error("Ошибка загрузки данных:", error));
 }

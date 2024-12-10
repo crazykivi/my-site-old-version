@@ -3,7 +3,7 @@ function loadProjects() {
     .then((response) => response.json())
     .then((data) => {
       renderProjects(data.projects);
-      console.log("Полученные проекты:", data.projects);
+      //console.debug("Полученные проекты:", data.projects);
     })
     .catch((error) => console.error("Ошибка загрузки данных:", error));
 }
