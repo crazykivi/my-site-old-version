@@ -91,6 +91,17 @@
         .lazy-load-text.no-animations:hover {
             opacity: 1;
         }
+
+        .project-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 
