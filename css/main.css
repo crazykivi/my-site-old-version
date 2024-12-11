@@ -32,37 +32,3 @@
 #about img {
   width: 400px;
 }
-
-#sidebar {
-  position: fixed;
-  top: 43vw;
-  right: -150px;
-  width: 150px;
-  background-color: #343a40;
-  color: white;
-  transition: right 0.3s ease;
-  z-index: 999;
-}
-
-#sidebar a {
-  display: block;
-  padding: 15px;
-  color: white;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-}
-
-#sidebar a:hover {
-  background-color: #575757;
-}
-
-#sidebar.active {
-  right: 0;
-}
-
-#toggleMenu {
-  position: fixed;
-  bottom: 5%;
-  right: 22px;
-  z-index: 1000;
-}
