@@ -55,43 +55,6 @@
             z-index: 1000;
         }
 
-        .lazy-load,
-        .lazy-load-text {
-            transform: translateX(-100%);
-            opacity: 0;
-            transition: transform 0.6s ease-out, opacity 0.6s ease-out;
-        }
-
-        .lazy-load.visible,
-        .lazy-load-text.visible {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .lazy-load-block {
-            opacity: 0;
-            transition: opacity 0.6s ease-out;
-        }
-
-        .lazy-load-block.visible {
-            opacity: 1;
-        }
-
-        .lazy-load.no-animations,
-        .lazy-load-text.no-animations {
-            transition: opacity 0.3s ease;
-        }
-
-        .lazy-load.no-animations.visible,
-        .lazy-load-text.no-animations.visible {
-            opacity: 1;
-        }
-
-        .lazy-load.no-animations:hover,
-        .lazy-load-text.no-animations:hover {
-            opacity: 1;
-        }
-
         .project-card {
             opacity: 0;
             transform: translateY(20px);
@@ -102,36 +65,20 @@
             opacity: 1;
             transform: translateY(0);
         }
-
-        #loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 1);
-            display: none;
-            z-index: 9999;
-            transition: opacity 1.2s ease;
-        }
     </style>
 </head>
 
 <body>
-    <div id="loading-overlay"></div>
-
     <header class="bg-dark text-white py-3">
-        <div class="container d-flex justify-content-between">
-            <h1 class="h4">Главная страница</h1>
-            <nav>
+        <div class="container d-flex justify-content-between align-items-center">
+            <h4>Главная страница</h4>
+            <nav id="navbar" class="d-flex justify-content-between">
                 <a href="/index.html" class="text-white text-decoration-none mx-2">Главная</a>
                 <a href="/projects.html" class="text-white text-decoration-none mx-2">Проекты</a>
                 <a href="/blog.html" class="text-white text-decoration-none mx-2">Блог</a>
             </nav>
         </div>
     </header>
-
-    <button class="btn btn-secondary position-fixed bottom-5 end-5" id="toggleMenu">Навигация</button>
 
     <div id="sidebar">
         <a href="#projects">Последние проекты</a>
@@ -155,10 +102,10 @@
             <h2 class="mb-4">О себе</h2>
             <div class="row align-items-center">
                 <div class="col-md-4">
-                    <img data-src="https://raw.githubusercontent.com/crazykivi/repo_img_for_site/refs/heads/main/blog-img/my2.png"
-                        alt="Фото Редько Никиты Сергеевича" class="img-fluid rounded-circle lazy-load">
+                    <img src="https://raw.githubusercontent.com/crazykivi/repo_img_for_site/refs/heads/main/blog-img/my2.png"
+                        alt="Фото Редько Никиты Сергеевича" class="img-fluid rounded-circle">
                 </div>
-                <div class="col-md-8 text-section lazy-load-text">
+                <div class="col-md-8 text-section">
                     <p><strong>Редько Никита Сергеевич</strong>, 25 лет <strong>(29.01.1999)</strong>.</p>
                     <p>Проживаю в <strong>г. Красноярск</strong>.</p>
                     <p><strong>Образование:</strong></p>
@@ -183,7 +130,7 @@
                         <li>MongoDB</li>
                     </ul>
                 </div>
-                <div class="col-md-12 mt-4 lazy-load-block">
+                <div class="col-md-12 mt-4">
                     <p>На данный момент работаю в <strong>КГБУ «ЦРМПиООС»</strong> (Министерство Красноярского края) на
                         должности <strong>программист 1 категории</strong>, где занимаюсь развитием и поддержкой
                         backend-сервисов, проектированием API, а также работой с базами данных и фронтендом.</p>

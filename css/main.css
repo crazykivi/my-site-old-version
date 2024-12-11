@@ -32,3 +32,22 @@
 #about img {
   width: 400px;
 }
+
+@media (max-width: 768px) {
+  #navbar {
+    display: none;
+    flex-direction: column;
+  }
+
+  #navbar.open {
+    display: flex;
+  }
+
+  #navbar a {
+    margin: 10px 0;
+  }
+
+  header h4 {
+    opacity: 0;
+  }
+}
