@@ -1,5 +1,5 @@
 function loadProjects() {
-  document.getElementById("loading-overlay").style.display = "block";
+  //document.getElementById("loading-overlay").style.display = "block";
   fetch(`https://nikitaredko.ru:3000/get-projects-index`)
     .then((response) => response.json())
     .then((data) => {
@@ -14,7 +14,7 @@ function renderProjects(projects) {
   const projectsList = document.getElementById("projects-list");
   projectsList.innerHTML = "";
 
-  let isFirstProject = true;
+  //let isFirstProject = true;
 
   projects.forEach((project, index) => {
     const projectElement = document.createElement("div");
@@ -53,10 +53,10 @@ function renderProjects(projects) {
     setTimeout(() => {
       projectElement.classList.add("visible");
 
-      if (isFirstProject) {
-        document.getElementById("loading-overlay").style.display = "none";
+      /* if (isFirstProject) {
+        document.getElementById("loading-overlay").style.opacity = "1";
         isFirstProject = false;
-      }
+      } */
     }, index * 200);
   });
 }
