@@ -231,7 +231,7 @@ events {
 http {
     server {
         listen 443 ssl;
-        server_name you_domain.your_domain_zone www.your_domain_zone.ru;
+        server_name you_domain.your_domain_zone www.you_domain.your_domain_zone;
 
         ssl_certificate /etc/letsencrypt/live/you_domain.your_domain_zone/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/you_domain.your_domain_zone/privkey.pem;
@@ -250,7 +250,7 @@ http {
 
     server {
         listen 80;
-        server_name you_domain.your_domain_zone www.your_domain_zone.ru;
+        server_name you_domain.your_domain_zone www.you_domain.your_domain_zone;
 
         return 301 https://$host$request_uri;
     }
@@ -266,4 +266,4 @@ sudo systemctl reload nginx
 ```
 ## При необходимости деплоя других проектов нужно создать уникальные имена для контейнеров (my-site-container) и привязок к портам (8080, 80).
 
-16.12.2024. Дата написания гайда 16.12.2024. Я всё ещё болею и мог что-то пропустить. Если вы заметили ошибки или неточности, можете сообщить мне их на мою личную почту: nik.ita-redko@yandex.ru
+Дата написания гайда 16.12.2024. Я всё ещё болею и мог что-то пропустить. Если вы заметили ошибки или неточности, можете сообщить мне их на мою личную почту: nik.ita-redko@yandex.ru
