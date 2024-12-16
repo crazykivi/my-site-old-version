@@ -10,7 +10,63 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/main.css?v=0.1" rel="stylesheet">
     <link href="css/overlay.css" rel="stylesheet">
-    <link href="css/auth.css" rel="stylesheet">
+    <style>
+        #sidebar {
+            position: fixed;
+            right: -160px;
+            width: 190px;
+            height: auto;
+            background-color: #343a40;
+            color: white;
+            transition: right 0.3s ease, border-radius 0.5s ease, transform 0.5s ease;
+            z-index: 999;
+            transform: translateY(-150%);
+            border-radius: 40px 0 0 40px;
+        }
+
+        #sidebar a {
+            display: block;
+            padding: 15px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s ease, opacity 0.5s ease;
+            ;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #sidebar.active a {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #sidebar.active a:hover {
+            background-color: #575757;
+        }
+
+        #sidebar.active {
+            right: 0;
+            border-radius: 0;
+        }
+
+        #toggleMenu {
+            position: fixed;
+            bottom: 5%;
+            right: 35px;
+            z-index: 1000;
+        }
+
+        .project-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
 
 <body>
