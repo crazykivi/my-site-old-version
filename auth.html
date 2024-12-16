@@ -8,20 +8,89 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            padding: 20px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        .auth-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .auth-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .auth-container .btn-primary {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+
+        .auth-container .form-control {
+            margin-bottom: 20px;
+            border-radius: 8px;
         }
 
         .modal-content {
-            text-align: center;
+            border-radius: 10px;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-title {
+            font-weight: 600;
+        }
+
+        .btn-close {
+            border: none;
+            background: transparent;
+            color: #333;
+        }
+
+        .text-danger {
+            font-size: 14px;
+        }
+
+        .auth-container,
+        .modal-content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h1 class="my-5 text-center">Добро пожаловать!</h1>
-        <button class="btn btn-primary" id="setCookieButton">Войти</button>
+    <div class="auth-container">
+        <h2>Авторизация</h2>
+        <button class="btn btn-primary" id="setCookieButton" data-bs-toggle="modal"
+            data-bs-target="#passwordModal">Войти</button>
     </div>
 
     <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
@@ -43,11 +112,8 @@
         </div>
     </div>
 
-    <!-- Подключаем Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="js/auth/auth.js"></script>
-
 </body>
 
 </html>

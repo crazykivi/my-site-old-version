@@ -1,7 +1,7 @@
 document
   .getElementById("setCookieButton")
   .addEventListener("click", function () {
-    var passwordModal = new bootstrap.Modal(
+    const passwordModal = new bootstrap.Modal(
       document.getElementById("passwordModal")
     );
     passwordModal.show();
@@ -10,7 +10,7 @@ document
 document
   .getElementById("submitPasswordButton")
   .addEventListener("click", function () {
-    var enteredPassword = document.getElementById("passwordInput").value;
+    const enteredPassword = document.getElementById("passwordInput").value;
 
     fetch("https://nikitaredko.ru:3001/check-password", {
       method: "POST",
@@ -25,13 +25,32 @@ document
         if (data.success) {
           alert(data.message);
           localStorage.setItem("token", data.token);
-          var passwordModal = bootstrap.Modal.getInstance(
+
+          const passwordModal = bootstrap.Modal.getInstance(
             document.getElementById("passwordModal")
           );
           passwordModal.hide();
+
+          const backdrop = document.querySelector(".modal-backdrop");
+          if (backdrop) {
+            backdrop.remove();
+          }
         } else {
-          document.getElementById("errorMessage").style.display = "block";
+          const errorMessage = document.getElementById("errorMessage");
+          errorMessage.style.display = "block";
         }
       })
-      .catch((error) => console.error("Ошибка:", error));
+      .catch((error) => {
+        console.error("Ошибка при отправке запроса:", error);
+        alert("Произошла ошибка при авторизации. Попробуйте еще раз.");
+      });
+  });
+
+document
+  .getElementById("passwordModal")
+  .addEventListener("hidden.bs.modal", function () {
+    const backdrop = document.querySelector(".modal-backdrop");
+    if (backdrop) {
+      backdrop.remove();
+    }
   });
