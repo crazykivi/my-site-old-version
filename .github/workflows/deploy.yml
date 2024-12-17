@@ -56,7 +56,7 @@ jobs:
               ${{ secrets.DOCKER_USERNAME }}/listprojects:main
 
             docker exec main-site-container nginx -s reload
-            
+
       - name: SSH to server and update Build container with VPN
         if: github.ref == 'refs/heads/build'
         uses: appleboy/ssh-action@v0.1.6
@@ -65,8 +65,12 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
+            cd /home/sshuser/sitegit || git clone https://github.com/crazykivi/my-site.git /home/sshuser/sitegit
+            git checkout build
+            git pull origin build
+
             mkdir -p /home/sshuser/vpn-data
-            chmod -R 777 /home/sshuser/vpn-data  # Добавляем права для каталога
+            chmod -R 777 /home/sshuser/vpn-data
 
             if [ ! -f /home/sshuser/vpn-data/config.ovpn ]; then
               echo "Создаём базовую конфигурацию VPN..."
