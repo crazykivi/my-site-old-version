@@ -1,9 +1,8 @@
-name: Build and Deploy Docker Image
+name: Build Docker Image for Build branch with VPN
 
 on:
   push:
     branches:
-      - main
       - build
 
 jobs:
@@ -23,42 +22,13 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image for Main branch
-        if: github.ref == 'refs/heads/main'
-        run: |
-          docker build -t listprojects-main .
-          docker tag listprojects-main ${{ secrets.DOCKER_USERNAME }}/listprojects:main
-          docker push ${{ secrets.DOCKER_USERNAME }}/listprojects:main
-
       - name: Build Docker image for Build branch with VPN
-        if: github.ref == 'refs/heads/build'
         run: |
-          docker build -f Dockerfile.vpn -t listprojects-build .
+          docker build -f Dockerfile.vpn -t listprojects-build .  # Сборка с VPN
           docker tag listprojects-build ${{ secrets.DOCKER_USERNAME }}/listprojects:build
           docker push ${{ secrets.DOCKER_USERNAME }}/listprojects:build
 
-      - name: SSH to server and update Main container
-        if: github.ref == 'refs/heads/main'
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/listprojects:main
-
-            docker stop main-site-container || true
-            docker rm main-site-container || true
-
-            docker run -d -p 8080:8080 --name main-site-container \
-              -v /home/sshuser/sitegit/nginxconfig/nginx-main.conf:/etc/nginx/nginx.conf \
-              -v /home/sshuser/sitegit:/usr/share/nginx/html \
-              ${{ secrets.DOCKER_USERNAME }}/listprojects:main
-
-            docker exec main-site-container nginx -s reload
-
       - name: SSH to server and update Build container with VPN
-        if: github.ref == 'refs/heads/build'
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -68,7 +38,7 @@ jobs:
             cd /home/sshuser/sitegit || git clone https://github.com/crazykivi/my-site.git /home/sshuser/sitegit
             git checkout build
             git pull origin build
-            
+
             mkdir -p /home/sshuser/vpn-data
             chmod -R 777 /home/sshuser/vpn-data
 

@@ -1,0 +1,49 @@
+name: Deploy from Build branch to Main
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Merge build to main
+        run: |
+          git checkout main
+          git pull origin main
+          git merge origin/build --no-edit
+          git push origin main
+
+      - name: Build Docker image for Main branch
+        run: |
+          docker build -t listprojects .
+          docker tag listprojects ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
+
+      - name: SSH to server and update Main container
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            cd /home/sshuser/sitegit
+            git pull
+
+            docker pull ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
+
+            docker stop my-site-container || true
+            docker rm my-site-container || true
+
+            docker run -d -p 8080:8080 --name my-site-container \
+              -v /home/sshuser/sitegit/nginxconfig/nginx-main.conf:/etc/nginx/nginx.conf \
+              -v /home/sshuser/sitegit:/usr/share/nginx/html \
+              ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
+
+            docker exec my-site-container nginx -s reload
