@@ -22,9 +22,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image for Build branch with VPN
+      - name: Build Docker image for Build branch
         run: |
-          docker build -f Dockerfiles/Dockerfile.vpn -t listprojects-build .
+          docker build -t listprojects-build .
           docker tag listprojects-build ${{ secrets.DOCKER_USERNAME }}/listprojects:build
           docker push ${{ secrets.DOCKER_USERNAME }}/listprojects:build
 
@@ -35,27 +35,6 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            mkdir -p /home/sshuser/vpn-data
-            chmod -R 777 /home/sshuser/vpn-data
-
-            if [ ! -f /home/sshuser/vpn-data/config.ovpn ]; then
-              echo "Создаём базовую конфигурацию VPN..."
-              echo "client" > /home/sshuser/vpn-data/config.ovpn
-              echo "dev tun" >> /home/sshuser/vpn-data/config.ovpn
-              echo "proto udp" >> /home/sshuser/vpn-data/config.ovpn
-              echo "remote vpn.example.com 1194" >> /home/sshuser/vpn-data/config.ovpn
-              echo "resolv-retry infinite" >> /home/sshuser/vpn-data/config.ovpn
-              echo "nobind" >> /home/sshuser/vpn-data/config.ovpn
-              echo "persist-key" >> /home/sshuser/vpn-data/config.ovpn
-              echo "persist-tun" >> /home/sshuser/vpn-data/config.ovpn
-              echo "ca /vpn-data/ca.crt" >> /home/sshuser/vpn-data/config.ovpn
-              echo "cert /vpn-data/client.crt" >> /home/sshuser/vpn-data/config.ovpn
-              echo "key /vpn-data/client.key" >> /home/sshuser/vpn-data/config.ovpn
-              echo "remote-cert-tls server" >> /home/sshuser/vpn-data/config.ovpn
-              echo "cipher AES-256-CBC" >> /home/sshuser/vpn-data/config.ovpn
-              echo "verb 3" >> /home/sshuser/vpn-data/config.ovpn
-            fi
-            
             cd /home/sshuser/sitegit
             git pull origin build
 
