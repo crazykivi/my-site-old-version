@@ -68,9 +68,9 @@ jobs:
             cd /home/sshuser/sitegit || git clone https://github.com/crazykivi/my-site.git /home/sshuser/sitegit
             git checkout build
             git pull origin build
-
-            sudo mkdir -p /home/sshuser/vpn-data
-            sudo chmod -R 777 /home/sshuser/vpn-data
+            
+            mkdir -p /home/sshuser/vpn-data
+            chmod -R 777 /home/sshuser/vpn-data
 
             if [ ! -f /home/sshuser/vpn-data/config.ovpn ]; then
               echo "Создаём базовую конфигурацию VPN..."
