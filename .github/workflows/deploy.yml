@@ -57,6 +57,7 @@ jobs:
 
             docker exec main-site-container nginx -s reload
 
+      #Просто тригер для пуша
       - name: SSH to server and update Build container with VPN
         if: github.ref == 'refs/heads/build'
         uses: appleboy/ssh-action@v0.1.6
