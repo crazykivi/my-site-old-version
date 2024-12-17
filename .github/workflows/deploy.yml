@@ -39,6 +39,8 @@ jobs:
             git checkout build
             git pull origin build
 
+            chown -R sshuser:sshuser /home/sshuser/sitegit
+
             mkdir -p /home/sshuser/vpn-data
             chmod -R 777 /home/sshuser/vpn-data
 
