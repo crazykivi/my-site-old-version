@@ -51,13 +51,12 @@ jobs:
             docker rm main-site-container || true
 
             docker run -d -p 8080:8080 --name main-site-container \
-              -v /home/sshuser/sitegit/nginx-main.conf:/etc/nginx/nginx.conf \
+              -v /home/sshuser/sitegit/nginxconfig/nginx-main.conf:/etc/nginx/nginx.conf \
               -v /home/sshuser/sitegit:/usr/share/nginx/html \
               ${{ secrets.DOCKER_USERNAME }}/listprojects:main
 
             docker exec main-site-container nginx -s reload
 
-      #Просто тригер для пуша
       - name: SSH to server and update Build container with VPN
         if: github.ref == 'refs/heads/build'
         uses: appleboy/ssh-action@v0.1.6
@@ -94,7 +93,7 @@ jobs:
 
             docker run -d -p 8082:8082 --name build-site-container \
               -v /home/sshuser/vpn-data:/vpn-data \
-              -v /home/sshuser/sitegit/nginx-build.conf:/etc/nginx/nginx.conf \
+              -v /home/sshuser/sitegit/nginxconfig/nginx-build.conf:/etc/nginx/nginx.conf \
               -v /home/sshuser/sitegit:/usr/share/nginx/html \
               --cap-add=NET_ADMIN \
               ${{ secrets.DOCKER_USERNAME }}/listprojects:build
