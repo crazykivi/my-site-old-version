@@ -65,10 +65,8 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            # Убедимся, что директория для VPN существует на VPS
             mkdir -p /home/sshuser/vpn-data
 
-            # Если конфигурация VPN отсутствует, создаём её
             if [ ! -f /home/sshuser/vpn-data/config.ovpn ]; then
               echo "Создаём базовую конфигурацию VPN..."
               cat > /home/sshuser/vpn-data/config.ovpn <<EOL
@@ -80,9 +78,9 @@ resolv-retry infinite
 nobind
 persist-key
 persist-tun
-ca ca.crt
-cert client.crt
-key client.key
+ca /vpn-data/ca.crt
+cert /vpn-data/client.crt
+key /vpn-data/client.key
 remote-cert-tls server
 cipher AES-256-CBC
 verb 3
