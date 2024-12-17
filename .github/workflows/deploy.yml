@@ -24,7 +24,7 @@ jobs:
 
       - name: Build Docker image for Build branch
         run: |
-          docker build -t listprojects-build .
+          docker build -f Dockerfiles/Dockerfile.build -t listprojects-build .
           docker tag listprojects-build ${{ secrets.DOCKER_USERNAME }}/listprojects:build
           docker push ${{ secrets.DOCKER_USERNAME }}/listprojects:build
 
