@@ -35,12 +35,6 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd /home/sshuser/sitegit || git clone https://github.com/crazykivi/my-site.git /home/sshuser/sitegit
-            git checkout build
-            git pull origin build
-
-            chown -R sshuser:sshuser /home/sshuser/sitegit
-
             mkdir -p /home/sshuser/vpn-data
             chmod -R 777 /home/sshuser/vpn-data
 
@@ -61,6 +55,9 @@ jobs:
               echo "cipher AES-256-CBC" >> /home/sshuser/vpn-data/config.ovpn
               echo "verb 3" >> /home/sshuser/vpn-data/config.ovpn
             fi
+            
+            cd /home/sshuser/sitegit
+            git pull origin build
 
             docker pull ${{ secrets.DOCKER_USERNAME }}/listprojects:build
 
