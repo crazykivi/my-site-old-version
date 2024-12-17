@@ -69,25 +69,20 @@ jobs:
 
             if [ ! -f /home/sshuser/vpn-data/config.ovpn ]; then
               echo "Создаём базовую конфигурацию VPN..."
-              cat > /home/sshuser/vpn-data/config.ovpn <<EOL
-client
-dev tun
-proto udp
-remote vpn.example.com 1194
-resolv-retry infinite
-nobind
-persist-key
-persist-tun
-ca /vpn-data/ca.crt
-cert /vpn-data/client.crt
-key /vpn-data/client.key
-remote-cert-tls server
-cipher AES-256-CBC
-verb 3
-EOL
-              touch /home/sshuser/vpn-data/ca.crt
-              touch /home/sshuser/vpn-data/client.crt
-              touch /home/sshuser/vpn-data/client.key
+              echo "client" > /home/sshuser/vpn-data/config.ovpn
+              echo "dev tun" >> /home/sshuser/vpn-data/config.ovpn
+              echo "proto udp" >> /home/sshuser/vpn-data/config.ovpn
+              echo "remote vpn.example.com 1194" >> /home/sshuser/vpn-data/config.ovpn
+              echo "resolv-retry infinite" >> /home/sshuser/vpn-data/config.ovpn
+              echo "nobind" >> /home/sshuser/vpn-data/config.ovpn
+              echo "persist-key" >> /home/sshuser/vpn-data/config.ovpn
+              echo "persist-tun" >> /home/sshuser/vpn-data/config.ovpn
+              echo "ca /vpn-data/ca.crt" >> /home/sshuser/vpn-data/config.ovpn
+              echo "cert /vpn-data/client.crt" >> /home/sshuser/vpn-data/config.ovpn
+              echo "key /vpn-data/client.key" >> /home/sshuser/vpn-data/config.ovpn
+              echo "remote-cert-tls server" >> /home/sshuser/vpn-data/config.ovpn
+              echo "cipher AES-256-CBC" >> /home/sshuser/vpn-data/config.ovpn
+              echo "verb 3" >> /home/sshuser/vpn-data/config.ovpn
             fi
 
             docker pull ${{ secrets.DOCKER_USERNAME }}/listprojects:build
