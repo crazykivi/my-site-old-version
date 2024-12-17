@@ -66,6 +66,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             mkdir -p /home/sshuser/vpn-data
+            chmod -R 777 /home/sshuser/vpn-data  # Добавляем права для каталога
 
             if [ ! -f /home/sshuser/vpn-data/config.ovpn ]; then
               echo "Создаём базовую конфигурацию VPN..."
