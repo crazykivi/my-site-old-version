@@ -24,9 +24,9 @@ jobs:
 
       - name: Build Docker image for Build branch
         run: |
-          docker build -f Dockerfiles/Dockerfile.build -t listprojects-build .
-          docker tag listprojects-build ${{ secrets.DOCKER_USERNAME }}/listprojects:build
-          docker push ${{ secrets.DOCKER_USERNAME }}/listprojects:build
+          docker build -f Dockerfiles/Dockerfile.build -t mysite-build .
+          docker tag mysite-build ${{ secrets.DOCKER_USERNAME }}/mysite:build
+          docker push ${{ secrets.DOCKER_USERNAME }}/mysite:build
 
       - name: SSH to server and update Build container with VPN
         uses: appleboy/ssh-action@v0.1.6
@@ -38,7 +38,7 @@ jobs:
             cd /home/sshuser/sitegit
             git pull origin build
 
-            docker pull ${{ secrets.DOCKER_USERNAME }}/listprojects:build
+            docker pull ${{ secrets.DOCKER_USERNAME }}/mysite:build
 
             docker stop build-site-container || true
             docker rm build-site-container || true
@@ -48,6 +48,6 @@ jobs:
               -v /home/sshuser/sitegit/Dockerfiles/nginxconfig/nginx-build.conf:/etc/nginx/nginx.conf \
               -v /home/sshuser/sitegit:/usr/share/nginx/html \
               --cap-add=NET_ADMIN \
-              ${{ secrets.DOCKER_USERNAME }}/listprojects:build
+              ${{ secrets.DOCKER_USERNAME }}/mysite:build
 
             docker exec build-site-container nginx -s reload
