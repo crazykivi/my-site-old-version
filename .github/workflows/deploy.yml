@@ -24,7 +24,7 @@ jobs:
 
       - name: Build Docker image for Build branch with VPN
         run: |
-          docker build -f Dockerfile.vpn -t listprojects-build .  # Сборка с VPN
+          docker build -f Dockerfiles/Dockerfile.vpn -t listprojects-build .
           docker tag listprojects-build ${{ secrets.DOCKER_USERNAME }}/listprojects:build
           docker push ${{ secrets.DOCKER_USERNAME }}/listprojects:build
 
@@ -66,7 +66,7 @@ jobs:
 
             docker run -d -p 8082:8082 --name build-site-container \
               -v /home/sshuser/vpn-data:/vpn-data \
-              -v /home/sshuser/sitegit/nginxconfig/nginx-build.conf:/etc/nginx/nginx.conf \
+              -v /home/sshuser/sitegit/Dockerfiles/nginxconfig/nginx-build.conf:/etc/nginx/nginx.conf \
               -v /home/sshuser/sitegit:/usr/share/nginx/html \
               --cap-add=NET_ADMIN \
               ${{ secrets.DOCKER_USERNAME }}/listprojects:build
