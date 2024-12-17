@@ -68,7 +68,7 @@ jobs:
             cd /home/sshuser/sitegit || git clone https://github.com/crazykivi/my-site.git /home/sshuser/sitegit
             git checkout build
             git pull origin build
-
+            
             mkdir -p /home/sshuser/vpn-data
             chmod -R 777 /home/sshuser/vpn-data
 
