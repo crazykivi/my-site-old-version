@@ -1,54 +1,76 @@
-#sidebar {
-  position: fixed;
-  right: -160px;
-  width: 190px;
-  height: auto;
-  background-color: #343a40;
-  color: white;
-  transition: right 0.3s ease, border-radius 0.5s ease, transform 0.5s ease;
-  z-index: 999;
-  transform: translateY(-150%);
-  border-radius: 40px 0 0 40px;
+body {
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
 }
 
-#sidebar a {
-  display: block;
-  padding: 15px;
-  color: white;
-  text-decoration: none;
-  transition: background-color 0.3s ease, opacity 0.5s ease;
-  opacity: 0;
-  pointer-events: none;
+.auth-container {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
 }
 
-#sidebar.active a {
-  opacity: 1;
-  pointer-events: auto;
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  font-weight: bold;
 }
 
-#sidebar.active a:hover {
-  background-color: #575757;
+.auth-container .btn-primary {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
 }
 
-#sidebar.active {
-  right: 0;
-  border-radius: 0;
+.auth-container .form-control {
+  margin-bottom: 20px;
+  border-radius: 8px;
 }
 
-#toggleMenu {
-  position: fixed;
-  bottom: 5%;
-  right: 35px;
-  z-index: 1000;
+.modal-content {
+  border-radius: 10px;
 }
 
-.project-card {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+.modal-body {
+  padding: 2rem;
 }
 
-.project-card.visible {
-  opacity: 1;
-  transform: translateY(0);
+.modal-title {
+  font-weight: 600;
+}
+
+.btn-close {
+  border: none;
+  background: transparent;
+  color: #333;
+}
+
+.text-danger {
+  font-size: 14px;
+}
+
+/* Добавляем анимации */
+.auth-container,
+.modal-content {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
