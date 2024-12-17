@@ -1,0 +1,10 @@
+FROM nginx:alpine
+
+RUN apk update && apk add --no-cache openvpn easy-rsa bash
+
+WORKDIR /vpn-data
+
+COPY ./generate-vpn-config.sh /usr/local/bin/generate-vpn-config.sh
+RUN chmod +x /usr/local/bin/generate-vpn-config.sh
+
+CMD ["sh", "-c", "/usr/local/bin/generate-vpn-config.sh && openvpn --config /vpn-data/config.ovpn & nginx -g 'daemon off;'"]

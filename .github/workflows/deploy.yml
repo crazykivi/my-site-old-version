@@ -4,54 +4,104 @@ on:
   push:
     branches:
       - main
+      - build
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v3
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-    - name: Build Docker image
-      run: |
-        docker build -t listprojects .
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Log in to DockerHub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker image for Main branch
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker build -t listprojects-main .
+          docker tag listprojects-main ${{ secrets.DOCKER_USERNAME }}/listprojects:main
+          docker push ${{ secrets.DOCKER_USERNAME }}/listprojects:main
 
-    - name: Tag Docker image
-      run: |
-        docker tag listprojects ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
+      - name: Build Docker image for Build branch with VPN
+        if: github.ref == 'refs/heads/build'
+        run: |
+          docker build -f Dockerfile.vpn -t listprojects-build .
+          docker tag listprojects-build ${{ secrets.DOCKER_USERNAME }}/listprojects:build
+          docker push ${{ secrets.DOCKER_USERNAME }}/listprojects:build
 
-    - name: Push Docker image to DockerHub
-      run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
+      - name: SSH to server and update Main container
+        if: github.ref == 'refs/heads/main'
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/listprojects:main
 
-    - name: SSH to server and update Docker container
-      uses: appleboy/ssh-action@v0.1.6
-      with:
-        host: ${{ secrets.SERVER_IP }}
-        username: ${{ secrets.SERVER_USER }}
-        password: ${{ secrets.SERVER_PASSWORD }}
-        script: |
-          cd /home/sshuser/sitegit
-          git pull
+            docker stop main-site-container || true
+            docker rm main-site-container || true
 
-          docker pull ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
-          
-          docker stop my-site-container || true
-          docker rm my-site-container || true
+            docker run -d -p 8080:8080 --name main-site-container \
+              -v /home/sshuser/sitegit/nginx-main.conf:/etc/nginx/nginx.conf \
+              -v /home/sshuser/sitegit:/usr/share/nginx/html \
+              ${{ secrets.DOCKER_USERNAME }}/listprojects:main
 
-          docker run -d -p 8080:8080 --name my-site-container \
-            -v /home/sshuser/sitegit/nginx.conf:/etc/nginx/nginx.conf \
-            -v /home/sshuser/sitegit:/usr/share/nginx/html \
-            ${{ secrets.DOCKER_USERNAME }}/listprojects:latest
+            docker exec main-site-container nginx -s reload
 
-          docker exec my-site-container nginx -s reload
+      - name: SSH to server and update Build container with VPN
+        if: github.ref == 'refs/heads/build'
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            # Убедимся, что директория для VPN существует на VPS
+            mkdir -p /home/sshuser/vpn-data
+
+            # Если конфигурация VPN отсутствует, создаём её
+            if [ ! -f /home/sshuser/vpn-data/config.ovpn ]; then
+              echo "Создаём базовую конфигурацию VPN..."
+              cat > /home/sshuser/vpn-data/config.ovpn <<EOL
+client
+dev tun
+proto udp
+remote vpn.example.com 1194
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+ca ca.crt
+cert client.crt
+key client.key
+remote-cert-tls server
+cipher AES-256-CBC
+verb 3
+EOL
+              touch /home/sshuser/vpn-data/ca.crt
+              touch /home/sshuser/vpn-data/client.crt
+              touch /home/sshuser/vpn-data/client.key
+            fi
+
+            docker pull ${{ secrets.DOCKER_USERNAME }}/listprojects:build
+
+            docker stop build-site-container || true
+            docker rm build-site-container || true
+
+            docker run -d -p 8082:8082 --name build-site-container \
+              -v /home/sshuser/vpn-data:/vpn-data \
+              -v /home/sshuser/sitegit/nginx-build.conf:/etc/nginx/nginx.conf \
+              -v /home/sshuser/sitegit:/usr/share/nginx/html \
+              --cap-add=NET_ADMIN \
+              ${{ secrets.DOCKER_USERNAME }}/listprojects:build
+
+            docker exec build-site-container nginx -s reload
