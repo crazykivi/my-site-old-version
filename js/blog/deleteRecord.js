@@ -5,7 +5,7 @@ function deleteRecord(recordId) {
     return;
   }
 
-  fetch("https://nikitaredko.ru:3000/delete-record", {
+  fetch("https://nikitaredko.ru:3000/records/delete-record", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
