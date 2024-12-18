@@ -1,6 +1,6 @@
 function loadProjects() {
   //document.getElementById("loading-overlay").style.display = "block";
-  fetch(`https://nikitaredko.ru:3000/get-projects-index`)
+  fetch(`https://nikitaredko.ru:3006/get-projects-index`)
     .then((response) => response.json())
     .then((data) => {
       renderProjects(data.projects);
