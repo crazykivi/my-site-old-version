@@ -12,7 +12,7 @@ document
   .addEventListener("click", function () {
     const enteredPassword = document.getElementById("passwordInput").value;
 
-    fetch("https://nikitaredko.ru:3006/check-password", {
+    fetch("https://nikitaredko.ru:3006/auth/check-password", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 function loadProjects(page = 1) {
-  fetch(`https://nikitaredko.ru:3006/get-projects?page=${page}`)
+  fetch(`https://nikitaredko.ru:3006/projects/get-projects?page=${page}`)
     .then((response) => response.json())
     .then((data) => {
       renderProjects(data.projects);
