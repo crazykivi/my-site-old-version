@@ -19,7 +19,7 @@ const editor = new Quill("#editor", {
   },
 });
 
-fetch("https://nikitaredko.ru:3006/auth/check-auth-token", {
+fetch("https://nikitaredko.ru:3000/auth/check-auth-token", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -56,7 +56,7 @@ editor.getModule("toolbar").addHandler("image", function () {
     const formData = new FormData();
     formData.append("image", file);
 
-    fetch("https://nikitaredko.ru:3006/records/upload-image", {
+    fetch("https://nikitaredko.ru:3000/records/upload-image", {
       method: "POST",
       body: formData,
     })
@@ -136,7 +136,7 @@ document.getElementById("save-button").addEventListener("click", () => {
     recordData.id = editRecordId;
   }
 
-  fetch("https://nikitaredko.ru:3006/records/save-record", {
+  fetch("https://nikitaredko.ru:3000/records/save-record", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 function loadRecords(page = 1) {
-  fetch(`https://nikitaredko.ru:3006/records/get-records?page=${page}`)
+  fetch(`https://nikitaredko.ru:3000/records/get-records?page=${page}`)
     .then((response) => response.json())
     .then((data) => {
       renderRecords(data.records);
