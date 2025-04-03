@@ -135,6 +135,18 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        .outline-container {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s ease, opacity 0.5s ease;
+        }
+
+        .outline-container.visible {
+            max-height: 500px;
+            opacity: 1;
+        }
     </style>
 </head>
 
@@ -145,7 +157,8 @@
             <nav id="navbar" class="d-flex justify-content-between ms-auto">
                 <a href="/index.html" class="text-white text-decoration-none mx-2">Главная</a>
                 <a href="/blog.html" class="text-white text-decoration-none mx-2">Блог</a>
-                <a href="https://outline.nikitaredko.ru/s/9d2d3ed1-7ddd-485f-acf1-81a405415224" class="text-white text-decoration-none mx-2">Вики</a>
+                <a href="https://outline.nikitaredko.ru/s/9d2d3ed1-7ddd-485f-acf1-81a405415224"
+                    class="text-white text-decoration-none mx-2">Вики</a>
             </nav>
         </div>
     </header>
@@ -161,12 +174,15 @@
         <div class="container">
             <h2 class="mb-4">Интеграция Outline</h2>
             <div class="row ghn-4">
-                <iframe src="https://outline.nikitaredko.ru/s/9d2d3ed1-7ddd-485f-acf1-81a405415224" name="wiki"
-                    allowTransparency="true" frameborder="0" width="100%" height="500" width="100%" height="500">
-                    Ваш браузер не поддерживает встраивание iframe. Пожалуйста, перейдите по ссылке:
-                    <a href="https://outline.nikitaredko.ru/s/9d2d3ed1-7ddd-485f-acf1-81a405415224">Открыть в новой
-                        вкладке</a>.
-                </iframe>
+                <button id="toggle-outline" class="btn btn-primary mb-10">Показать Outline</button>
+                <div id="outline-container" class="outline-container">
+                    <iframe src="https://outline.nikitaredko.ru/s/9d2d3ed1-7ddd-485f-acf1-81a405415224" name="wiki"
+                        allowTransparency="true" frameborder="0" width="100%" height="500" width="100%" height="500">
+                        Ваш браузер не поддерживает встраивание iframe. Пожалуйста, перейдите по ссылке:
+                        <a href="https://outline.nikitaredko.ru/s/9d2d3ed1-7ddd-485f-acf1-81a405415224">Открыть в новой
+                            вкладке</a>.
+                    </iframe>
+                </div>
             </div>
         </div>
     </section>
@@ -180,7 +196,10 @@
                         alt="Фото Редько Никиты Сергеевича" class="img-fluid rounded-circle">
                 </div>
                 <div class="col-md-8 text-section">
-                    <p><strong>Редько Никита Сергеевич</strong>, 25 лет <strong>(29.01.1999)</strong>.</p>
+                    <p><strong>Редько Никита Сергеевич</strong>,
+                        <span id="age">26</span> лет
+                        <strong>(29.01.1999)</strong>.
+                    </p>
                     <p>Проживаю в <strong>г. Красноярск</strong>.</p>
                     <p><strong>Образование:</strong></p>
                     <ul>
@@ -240,7 +259,7 @@
                 <br><br>
                 Все исходные коды лежат на <a href="https://github.com/crazykivi/my-site">данном репозитории</a>,
                 инструкция по развертыванию содержится по <a
-                    href="https://wiki.nikitaredko.ru/guide:развертывание_сайта_через_docker_и_github_actions">данном
+                    href="https://outline.nikitaredko.ru/s/9d2d3ed1-7ddd-485f-acf1-81a405415224/doc/razvertyvanie-sajta-cherez-docker-i-github-actions-JikOD7ACyo">данном
                     ссылке</a>.
             </p>
         </div>
@@ -256,6 +275,20 @@
     <script>
         window.addEventListener('load', function () {
             document.body.classList.add('loaded');
+        });
+    </script>
+    <script>
+        const toggleButton = document.getElementById('toggle-outline');
+        const outlineContainer = document.getElementById('outline-container');
+
+        toggleButton.addEventListener('click', () => {
+            if (outlineContainer.classList.contains('visible')) {
+                outlineContainer.classList.remove('visible');
+                toggleButton.textContent = 'Показать Outline';
+            } else {
+                outlineContainer.classList.add('visible');
+                toggleButton.textContent = 'Скрыть Outline';
+            }
         });
     </script>
 </body>
