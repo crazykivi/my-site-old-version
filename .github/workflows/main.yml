@@ -42,8 +42,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/sshuser/sitegit
-            git pull || echo "Git pull failed"
-
+            git fetch origin main
+            git reset --hard origin/main || echo "Git reset failed"
+  
             docker pull ${{ secrets.DOCKER_USERNAME }}/mysite:latest
 
             docker stop my-site-container || true
