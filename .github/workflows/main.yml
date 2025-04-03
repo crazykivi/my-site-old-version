@@ -37,8 +37,7 @@ jobs:
       - name: Install SSH key
         uses: webfactory/ssh-agent@v0.7.0
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Без passphrase
 
       - name: SSH to server and update Docker container
         uses: appleboy/ssh-action@v0.1.6
