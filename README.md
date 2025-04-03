@@ -1,9 +1,6 @@
 # Этот проект представляет собой статический сайт, который автоматически собирается и развертывается с использованием Docker и GitHub Actions. 
 Каждый раз, когда изменения вносятся в репозиторий, через CI/CD процесс происходит пересборка Docker контейнера с последними файлами и автоматический деплой на сервер.
 
-# Этот проект представляет собой статический сайт, который автоматически собирается и развертывается с использованием Docker и GitHub Actions. 
-Каждый раз, когда изменения вносятся в репозиторий, через CI/CD процесс происходит пересборка Docker контейнера с последними файлами и автоматический деплой на сервер.
-
 ## 1. Подготовка окружения
 
 Прежде чем приступить к работе, необходимо выполнить несколько базовых шагов:
@@ -28,6 +25,49 @@ sudo usermod -aG docker ssh_user_name
 ```ssh
 ssh ssh_user_name@your_server_ip
 ```
+
+### 1.3 Настройка SSH ключа
+
+1. Данный пункт несёт не обязательный, но ==рекомендуемый характер==. Для генерации ключа, перейдите на пользователя, под которым будет выполнятся сборка docker контейнера
+
+```bash
+su - ssh_user_name
+```
+
+2. После этого, выполните команду
+
+```bash
+ssh-keygen -t rsa -b 4096 -C "тут комментарий к ключу"
+```
+
+Ключ будет сохранён в \~/.ssh/id_rsa, если не менять название файла.
+
+!По желанию можно добавить passphrase, но я не знаю, как его прописать в github actions, возможно допишу в будущем.!
+
+
+2. Скопируйте содержимое файла id_rsa.pub (если задавали своё имя для файла, то нужно взять данные из него)
+
+```bash
+cat ~/.ssh/id_rsa.pub
+```
+
+3. Добавьте его в файл **authorized_keys** для пользователя “ssh_user_name”
+
+```bash
+echo "ssh-rsa AAAAB...DObw==" >> ~/.ssh/authorized_keys
+```
+
+4. После этого, вам нужно сохранить себе **публичный ключ** из файла **id_rsa** (если задавали своё имя для файла, то нужно взять данные из него)
+
+```bash
+-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn
+...fRgw==
+-----END OPENSSH PRIVATE KEY-----
+```
+
+Данный ключ нам понадобится в будущем
+
 
 Для GitHub Actions можно использовать ключи SSH через secrets (SERVER_SSH_PRIVATE_KEY)
 
@@ -151,6 +191,74 @@ jobs:
           docker exec my-site-container nginx -s reload
 ```
   * В шаге docker exec my-site-container nginx -s reload действие необязательно, так как CMD ["nginx", "-g", "daemon off;"] в Dockerfile уже выполняет запуск сервера.
+
+**Если вы создали ключ доступа к серверу**, то файл ==deploy.yml== будет выглядеть следующим образом
+
+```
+name: Build and Deploy Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -f Dockerfiles/Dockerfile -t mysite .
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Tag Docker image
+        run: |
+          docker tag mysite ${{ secrets.DOCKER_USERNAME }}/mysite:latest
+
+      - name: Push Docker image to DockerHub
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/mysite:latest
+
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: SSH to server and update Docker container
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/sshuser/sitegit
+            git pull
+
+            docker pull ${{ secrets.DOCKER_USERNAME }}/mysite:latest
+
+            docker stop my-site-container || true
+            docker rm my-site-container || true
+
+            docker run -d -p 8080:8080 --name my-site-container \
+              -v /home/sshuser/sitegit/Dockerfiles/nginxconfig/nginx-main.conf:/etc/nginx/nginx.conf \
+              -v /home/sshuser/sitegit:/usr/share/nginx/html \
+              ${{ secrets.DOCKER_USERNAME }}/mysite:latest
+
+            docker exec my-site-container nginx -s reload
+```
+
   * 3.2 Перейдите в настройки вашего репозитория на GitHub (Settings -> Secrets and variables -> Actions -> New repository secret) и добавьте следующие секреты:
 ```github secret
 DOCKER_USERNAME — ваш логин DockerHub
@@ -159,7 +267,19 @@ SERVER_IP — IP-адрес вашего сервера
 SERVER_USER — SSH-пользователь на сервере
 SERVER_PASSWORD — пароль SSH-пользователя
 ```
-==== Теперь ваш сайт будет автоматически собираться и деплоиться на сервер при каждом пуше в ветку main. ====
+
+Если вы создали ключ авторизации к серверу, то нужно добавить следующие секреты
+
+```docker
+DOCKER_USERNAME # Логин DockerHub 
+DOCKER_PASSWORD # Пароль 
+SERVER_IP       # IP-адрес вашего сервера 
+SERVER_USER     # SSH-пользователь на сервере 
+SERVER_PASSWORD # Пароль SSH-пользователя
+SSH_PRIVATE_KEY # Данные из приватного ключа (по дефолтку id_rsa) нужно записать сюда
+```
+
+Теперь ваш сайт будет автоматически собираться и деплоиться на сервер при каждом пуше в ветку main. 
 
 **4. Как выполнить автоматический деплой проекта**
 
