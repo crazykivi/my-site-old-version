@@ -34,11 +34,6 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/mysite:latest
 
-      - name: Install SSH key
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
       - name: SSH to server and update Docker container
         uses: appleboy/ssh-action@v0.1.6
         with:
@@ -47,7 +42,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/sshuser/sitegit
-            git pull
+            git pull || echo "Git pull failed"
 
             docker pull ${{ secrets.DOCKER_USERNAME }}/mysite:latest
 
